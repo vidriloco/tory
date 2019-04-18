@@ -21,7 +21,7 @@ class LandingPage extends Component {
 						<ion-input placeholder="Nombre de usuario o Email" type="email"></ion-input>
 					
 						<ion-input placeholder="Contraseña" type="password"></ion-input>
-						<IonButton expand="block" color="warning">Entrar</IonButton>
+						<IonButton expand="block" href="/feed" color="warning">Entrar</IonButton>
 					
 	      	</IonCardContent>
 	    	</IonCard>

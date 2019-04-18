@@ -3,6 +3,8 @@ import { IonTabs, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, I
 import { Route, Redirect } from 'react-router';
 import LandingPage from './LandingPage';
 import SignUpPage from './SignUpPage';
+import FeedPage from './FeedPage';
+import OfferPage from './OfferPage';
 
 class AppStack extends Component {
 	render() {
@@ -63,6 +65,8 @@ class AppStack extends Component {
 		return <IonRouterOutlet>
 			<Route path="/:tab(landing)" component={LandingPage} exact={true} />
 			<Route path="/:tab(sign-up)" component={SignUpPage} exact={true} />
+			<Route path="/:tab(feed)" component={FeedPage} exact={true} />
+			<Route path="/:tab(offer)" component={OfferPage} exact={true} />
 		</IonRouterOutlet>;
 	}
 }
