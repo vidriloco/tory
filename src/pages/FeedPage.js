@@ -37,7 +37,7 @@ class FeedPage extends Component {
 									<ion-icon name="hourglass"></ion-icon> En revisión
 								</IonLabel>
 			        </IonChip>
-							<IonButton color="warning"><ion-icon name="create"></ion-icon></IonButton>
+							<IonButton color="warning" href="/edit-offer/1"><ion-icon name="create"></ion-icon></IonButton>
 							<IonButton color="danger"><ion-icon name="trash"></ion-icon></IonButton>
 						</IonItem>
 					</IonList>
@@ -86,7 +86,7 @@ class FeedPage extends Component {
 				</IonCardHeader>
 		
 				<IonCardContent>
-					<IonButton expand="block" href="/offer">Latas</IonButton>
+					<IonButton expand="block" href="/new-offer">Latas</IonButton>
 				</IonCardContent>
 			</IonCard>
 		</div>
