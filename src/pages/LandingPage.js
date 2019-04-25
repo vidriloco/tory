@@ -11,7 +11,7 @@ class LandingPage extends Component {
 	      	
 				</IonCard>
 				<IonCard>
-					<img src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" />
+					<img alt="" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" />
 	      	<IonCardHeader>
 	        	<IonCardTitle>Bienvenido</IonCardTitle>
 						<IonCardSubtitle>Si ya tienes una cuenta, inicia sesión</IonCardSubtitle>
