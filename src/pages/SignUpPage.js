@@ -1,8 +1,32 @@
 import React, { Component } from 'react';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
+import Backend from '../Backend';
 
 class SignUpPage extends Component {
+	
+	constructor(props) {
+    super(props);
+
+		this.state = {
+			name: null,
+			username: null,
+			email: null,
+			password: null,
+			phoneNumber: null
+		}
+		
+		this.updateField = this.updateField.bind(this);
+		this.createUserAccount = this.createUserAccount.bind(this);
+  }
+	
+	componentWillMount() {
+		var token = localStorage.getItem('token') || '';
+		if(token.length > 0) {
+			this.props.history.push("/feed");
+		}
+	}
+	
   render() {
     return (
       <div>
@@ -15,17 +39,18 @@ class SignUpPage extends Component {
 	      	</IonCardHeader>
 
 	      	<IonCardContent>
-						<ion-input placeholder="Nombre de usuario"></ion-input>
-						<ion-input placeholder="Email" type="email"></ion-input>
+						<IonInput id="name" placeholder="Tu nombre (Opcional)" value={this.state.name} onIonChange={this.updateField}></IonInput>
+						<IonInput id="username" placeholder="Nombre de usuario" value={this.state.username} onIonChange={this.updateField} required></IonInput>
+						<IonInput id="email" placeholder="Email" type="email" value={this.state.email} onIonChange={this.updateField} required></IonInput>
 					
-						<ion-input placeholder="Contraseña" type="password"></ion-input>
+						<IonInput id="password" placeholder="Contraseña" type="password" value={this.state.password} onIonChange={this.updateField} required></IonInput>
 			
-						<ion-input placeholder="Tu What's App (Opcional)" type="email"></ion-input>
+						<IonInput id="phoneNumber" placeholder="Tu What's App (Opcional)" type="email" value={this.state.phoneNumber} onIonChange={this.updateField}></IonInput>
 						<p className="fieldNote">Nos va a facilitar coordinar la recolección de los reciclables.</p>
 	      	</IonCardContent>
 					
 					<IonCardContent>
-						<IonButton expand="block">Registrate</IonButton>
+						<IonButton expand="block" onClick={this.createUserAccount}>Registrate</IonButton>
 					</IonCardContent>
 	    	</IonCard>
 				<IonCard>					
@@ -41,6 +66,38 @@ class SignUpPage extends Component {
 			</div>
     );
   }
+	
+	createUserAccount() {
+		var data = { user: this.state };
+		
+		var result = fetch(Backend.users('create'), {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+		.then(response => {
+        if (!response.ok) { throw response }
+        return response.json();
+    })
+		.then(json => {
+			var tokenValue = json.token;
+			localStorage.setItem('token', tokenValue);
+			this.props.history.push("/");
+    })
+		.catch(error => {
+			error.json().then(jsonError => {
+	      alert(jsonError.error);
+	    })
+    });
+	}
+	
+	updateField(event) {
+		var newState = {};
+		newState[event.target.id] = event.target.value;
+		this.setState(newState);
+	}
 }
 
 export default SignUpPage;
