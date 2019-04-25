@@ -4,10 +4,8 @@ import '@ionic/core/css/core.css';
 import '@ionic/core/css/ionic.bundle.css';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import AppStack from "./pages/AppStack";
 
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {

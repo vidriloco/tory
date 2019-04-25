@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
 
 class OfferPage extends Component {
