@@ -4,6 +4,12 @@ import logo from '../recyclo-logo.svg';
 
 class FeedPage extends Component {
 	
+	constructor(props) {
+		super(props);
+
+		this.logout = this.logout.bind(this);
+	}
+	
 	renderTypes() {
 		return <IonItem>
         <IonLabel>Unidades</IonLabel>
@@ -92,13 +98,25 @@ class FeedPage extends Component {
 		</div>
 	}
 	
-  render() {
-    return <IonContent>
-		 { this.renderOfferPrompt() }
-		 { this.activeItems() }
-		 { this.inactiveItems() }
+	renderBackForm() {
+		return <IonContent className="ion-padding">
+				<IonButton color="dark" size="small" onClick={this.logout}>Cerrar Sesión</IonButton>
+			</IonContent>
+	}
+	
+	logout() {
+		localStorage.setItem('token', '');
+		this.props.history.push("/");
+	}
+	
+	render() {
+		return <IonContent>
+			{ this.renderOfferPrompt() }
+			{ this.activeItems() }
+			{ this.inactiveItems() }
+			{ this.renderBackForm() }
 		</IonContent>
-  }
+	}
 }
 
 export default FeedPage;
