@@ -8,6 +8,12 @@ class BackendRoutes {
 			return this.url().concat('/api/users');
 		}
 	}
+	
+	static sessions(namespace) {
+		if(namespace === "create") {
+			return this.url().concat('/api/sessions');
+		}
+	}
 }
 
 export default BackendRoutes;
