@@ -13,7 +13,7 @@ class SignUpPage extends Component {
 			username: null,
 			email: null,
 			password: null,
-			phoneNumber: null
+			phone: null
 		}
 		
 		this.updateField = this.updateField.bind(this);
@@ -45,7 +45,7 @@ class SignUpPage extends Component {
 					
 						<IonInput id="password" placeholder="Contraseña" type="password" value={this.state.password} onIonChange={this.updateField} required></IonInput>
 			
-						<IonInput id="phoneNumber" placeholder="Tu What's App (Opcional)" type="email" value={this.state.phoneNumber} onIonChange={this.updateField}></IonInput>
+						<IonInput id="phone" placeholder="Tu What's App (Opcional)" value={this.state.phone} onIonChange={this.updateField}></IonInput>
 						<p className="fieldNote">Nos va a facilitar coordinar la recolección de los reciclables.</p>
 	      	</IonCardContent>
 					
