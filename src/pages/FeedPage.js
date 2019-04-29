@@ -92,7 +92,7 @@ class FeedPage extends Component {
 	
 	renderOfferPrompt() {
 		const materialItems = this.state.materials.filter((material) => material.enabled).map((material) => 
-		<IonButton key={ material.value } expand="block" href={ "/new-offer?value=".concat(material.value).concat("&humanized=").concat(material.humanized) }>{ material.humanized }</IonButton>);
+		<IonButton key={ material.value } expand="block" href={ "/new-offer/".concat(material.value).concat("/").concat(material.humanized) }>{ material.humanized }</IonButton>);
 				
 		return <div>
 			<IonCard>

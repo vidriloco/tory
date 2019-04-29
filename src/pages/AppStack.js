@@ -15,7 +15,7 @@ class AppStack extends Component {
 					<Route exact path="/landing" render={() => <Redirect to="/feed"/>} />
 					
 					<Route exact path="/feed" component={FeedPage} />
-					<Route exact path="/new-offer" component={OfferPage} />
+					<Route exact={false} path="/new-offer/:value/:title" component={OfferPage} />
 					<Route exact path="/edit-offer" component={OfferPage} />
 			  </IonPage>
 		} else {

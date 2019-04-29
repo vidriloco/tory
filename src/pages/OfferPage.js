@@ -4,12 +4,20 @@ import logo from '../recyclo-logo.svg';
 
 class OfferPage extends Component {
 	
+	constructor(props) {
+		super(props);
+
+		this.state = { 
+			material: { value: props.match.params.value, title: props.match.params.title }
+		};
+	}
+	
 	renderTypes() {
 		return <IonItem>
         <IonLabel>Unidades</IonLabel>
         <IonSelect interface="action-sheet" placeholder="Seleccionar">
           <IonSelectOption value="bags">Bolsas</IonSelectOption>
-          <IonSelectOption value="units">Latas</IonSelectOption>
+          <IonSelectOption value="units">Piezas</IonSelectOption>
           <IonSelectOption value="kgs">Kilos</IonSelectOption>
         </IonSelect>
       </IonItem>
@@ -17,7 +25,7 @@ class OfferPage extends Component {
 	
 	renderAvailableAreas() {
 		return <IonItem>
-        <IonLabel>Zonas</IonLabel>
+        <IonLabel>Zona</IonLabel>
         <IonSelect interface="action-sheet" placeholder="Seleccionar">
           <IonSelectOption value="roma-norte">Roma Norte</IonSelectOption>
           <IonSelectOption value="roma-sur">Roma Sur</IonSelectOption>
@@ -33,7 +41,7 @@ class OfferPage extends Component {
 				</IonCard>
 				<IonCard>					
 	      	<IonCardHeader>
-	        	<IonCardTitle><p className="ion-text-center">Ofrecer latas</p></IonCardTitle>
+	        	<IonCardTitle><p className="ion-text-center">Ofrecer { this.state.material.title }</p></IonCardTitle>
 	      	</IonCardHeader>
 
 					<IonCardContent>
