@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonTabs, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonPage } from '@ionic/react';
+import { IonIcon, IonLabel, IonRouterOutlet, IonPage } from '@ionic/react';
 import { Route, Redirect } from 'react-router';
 import LandingPage from './LandingPage';
 import SignUpPage from './SignUpPage';
@@ -8,29 +8,32 @@ import OfferPage from './OfferPage';
 
 class AppStack extends Component {
 	render() {
-		// logged in
-		var token = localStorage.getItem('token') || '';
-		if(token.length == 0) {
+		if(this.loggedIn()) {
 			return <IonPage>
-					<Route exact path="/" render={() => <Redirect to="/landing"/>}/>
-					{ this.renderRoutesAndComponents() }
+					<Route exact path="/" render={() => <Redirect to="/feed"/>}/>
+					<Route exact path="/sign-up" render={() => <Redirect to="/feed"/>} />
+					<Route exact path="/landing" render={() => <Redirect to="/feed"/>} />
+					
+					<Route exact path="/feed" component={FeedPage} />
+					<Route exact path="/new-offer" component={OfferPage} />
+					<Route exact path="/edit-offer" component={OfferPage} />
 			  </IonPage>
 		} else {
 			return <IonPage>
-			    <Route exact path="/" render={() => <Redirect to="/feed"/>}/>
-			    { this.renderRoutesAndComponents() }
+			    <Route exact path="/" render={() => <Redirect to="/landing"/>}/>
+					<Route exact path="/feed" render={() => <Redirect to="/landing"/>}/>
+					<Route exact path="/new-offer" render={() => <Redirect to="/landing"/>}/>
+					<Route exact path="/edit-offer" render={() => <Redirect to="/landing"/>}/>
+			
+					<Route exact path="/landing" component={LandingPage} />
+					<Route exact path="/sign-up" component={SignUpPage} />
 			  </IonPage>
 		}
 	}
 	
-	renderRoutesAndComponents() {
-		return <IonRouterOutlet>
-			<Route path="/:tab(landing)" component={LandingPage} exact={true} />
-			<Route path="/:tab(sign-up)" component={SignUpPage} exact={true} />
-			<Route path="/:tab(feed)" component={FeedPage} exact={true} />
-			<Route path="/:tab(new-offer)" component={OfferPage} exact={true} />
-			<Route path="/:tab(edit-offer)" component={OfferPage} exact={true} />
-		</IonRouterOutlet>;
+	loggedIn() {
+		var token = localStorage.getItem('token') || '';
+		return token.length > 0 && typeof token !== undefined && token !== null && token !== '' && token !== 'null';
 	}
 }
 

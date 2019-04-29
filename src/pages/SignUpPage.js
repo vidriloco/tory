@@ -20,13 +20,6 @@ class SignUpPage extends Component {
 		this.createUserAccount = this.createUserAccount.bind(this);
   }
 	
-	componentWillMount() {
-		var token = localStorage.getItem('token') || '';
-		if(token.length > 0) {
-			this.props.history.push("/feed");
-		}
-	}
-	
   render() {
     return (
       <div>
