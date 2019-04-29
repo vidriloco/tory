@@ -14,6 +14,12 @@ class BackendRoutes {
 			return this.url().concat('/api/sessions');
 		}
 	}
+	
+	static materials(namespace) {
+		if(namespace === "list") {
+			return this.url().concat('/api/materials');
+		}
+	}
 }
 
 export default BackendRoutes;

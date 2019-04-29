@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
+import Backend from '../Backend';
 
 class FeedPage extends Component {
 	
 	constructor(props) {
 		super(props);
 
+		this.state = { 
+			materials: [{ value: "aluminium-can", humanized: "Lata", enabled: true }] 
+		}
+		
 		this.logout = this.logout.bind(this);
+	}
+	
+	componentWillMount() {
+		this.fetchMaterialTypes();
 	}
 	
 	renderTypes() {
@@ -82,6 +91,9 @@ class FeedPage extends Component {
 	}
 	
 	renderOfferPrompt() {
+		const materialItems = this.state.materials.filter((material) => material.enabled).map((material) => 
+		<IonButton key={ material.value } expand="block" href={ "/new-offer?value=".concat(material.value).concat("&humanized=").concat(material.humanized) }>{ material.humanized }</IonButton>);
+				
 		return <div>
 			<IonCard>
 				<img src={logo} className="App-logo" alt="logo" />
@@ -92,10 +104,31 @@ class FeedPage extends Component {
 				</IonCardHeader>
 		
 				<IonCardContent>
-					<IonButton expand="block" href="/new-offer">Latas</IonButton>
+					{ materialItems }
 				</IonCardContent>
 			</IonCard>
 		</div>
+	}
+	
+	fetchMaterialTypes() {
+		var result = fetch(Backend.materials('list'), {
+			headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+        }
+    })
+		.then(response => {
+        if (!response.ok) { throw response }
+        return response.json();
+    })
+		.then(json => {
+			this.setState({ materials: json.materials });
+    })
+		.catch(error => {
+			error.json().then(jsonError => {
+	      alert(jsonError.error);
+	    })
+    });
 	}
 	
 	renderBackForm() {
