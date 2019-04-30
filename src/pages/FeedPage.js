@@ -132,9 +132,9 @@ class FeedPage extends Component {
 	}
 	
 	renderBackForm() {
-		return <IonContent className="ion-padding">
+		return <div className="ion-padding">
 				<IonButton color="dark" size="small" onClick={this.logout}>Cerrar Sesión</IonButton>
-			</IonContent>
+			</div>
 	}
 	
 	logout() {
