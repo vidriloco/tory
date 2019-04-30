@@ -20,6 +20,12 @@ class BackendRoutes {
 			return this.url().concat('/api/materials');
 		}
 	}
+	
+	static offers(namespace) {
+		if(namespace === "create") {
+			return this.url().concat('/api/offers');
+		}
+	}
 }
 
 export default BackendRoutes;
