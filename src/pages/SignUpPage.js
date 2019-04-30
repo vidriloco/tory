@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
 import Backend from '../Backend';
 
@@ -22,7 +22,7 @@ class SignUpPage extends Component {
 	
   render() {
     return (
-      <div>
+      <IonContent>
 				<IonCard>
 					<img src={logo} className="App-logo" alt="logo" />
 				</IonCard>
@@ -56,7 +56,7 @@ class SignUpPage extends Component {
 						<IonButton expand="block" href="/landing" color="secondary">Iniciar Sesión</IonButton>
 					</IonCardContent>
 	    	</IonCard>
-			</div>
+			</IonContent>
     );
   }
 	

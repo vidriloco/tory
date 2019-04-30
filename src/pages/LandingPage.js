@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
 import Backend from '../Backend';
 
@@ -18,35 +18,35 @@ class LandingPage extends Component {
 	
   render() {
     return (
-      <div>
-		<IonCard>
-			<img src={logo} className="App-logo" alt="logo" />
-		</IonCard>
-		<IonCard>
-			<img alt="" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" />
-	      	<IonCardHeader>
-	        	<IonCardTitle>Bienvenido</IonCardTitle>
-				<IonCardSubtitle>Si ya tienes una cuenta, inicia sesión</IonCardSubtitle>
-	      	</IonCardHeader>
+		<IonContent>
+			<IonCard>
+				<img src={logo} className="App-logo" alt="logo" />
+			</IonCard>
+			<IonCard>
+				<img alt="" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" />
+		      	<IonCardHeader>
+		        	<IonCardTitle>Bienvenido</IonCardTitle>
+					<IonCardSubtitle>Si ya tienes una cuenta, inicia sesión</IonCardSubtitle>
+		      	</IonCardHeader>
 
-	      	<IonCardContent>
-				<IonInput id="login" placeholder="Nombre de usuario o Email" type="email" value={this.state.login} onIonChange={this.updateField}></IonInput>
-					
-				<IonInput id="password" placeholder="Contraseña" type="password" value={this.state.password} onIonChange={this.updateField}></IonInput>
-				<IonButton expand="block" color="warning" onClick={this.loginAccount}>Entrar</IonButton>
-	      	</IonCardContent>
-	    	</IonCard>
-					
-				<IonCard>
-	      	<IonCardHeader>
-	        	<IonCardTitle>Nuevo?</IonCardTitle>
-				<IonCardSubtitle>Empieza a publicar tus reciclables hoy</IonCardSubtitle>
-	      	</IonCardHeader>
+		      	<IonCardContent>
+					<IonInput id="login" placeholder="Nombre de usuario o Email" type="email" value={this.state.login} onIonChange={this.updateField}></IonInput>
+				
+					<IonInput id="password" placeholder="Contraseña" type="password" value={this.state.password} onIonChange={this.updateField}></IonInput>
+					<IonButton expand="block" color="warning" onClick={this.loginAccount}>Entrar</IonButton>
+		      	</IonCardContent>
+		    	</IonCard>
+				
+					<IonCard>
+		      	<IonCardHeader>
+		        	<IonCardTitle>Nuevo?</IonCardTitle>
+					<IonCardSubtitle>Empieza a publicar tus reciclables hoy</IonCardSubtitle>
+		      	</IonCardHeader>
 				<IonCardContent>
 					<IonButton expand="block" href="/sign-up">Crear cuenta</IonButton>
 				</IonCardContent>
 	    	</IonCard>
-		</div>
+		</IonContent>
     );
   }
 	
