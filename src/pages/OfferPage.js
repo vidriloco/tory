@@ -10,11 +10,54 @@ class OfferPage extends Component {
 
 		this.updateField = this.updateField.bind(this);
 
-		this.state = { 
-			material: { value: props.match.params.value, title: props.match.params.title }
-		};
+		this.state = { quantity: null, zone: null, units: null };
 		
 		this.publishOffer = this.publishOffer.bind(this);
+	}
+	
+	componentWillMount() {
+		this.fetchMaterialTypes();
+	}
+	
+	fetchMaterialTypes() {
+		var result = fetch(Backend.materials('list'), {
+			headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+        }
+    })
+		.then(response => {
+        if (!response.ok) { throw response }
+        return response.json();
+    })
+		.then(json => {
+			this.setState({ materials: json.materials });
+    })
+		.catch(error => {
+			error.json().then(jsonError => {
+	      alert(jsonError.error);
+	    })
+    });
+	}
+	
+	renderOfferPrompt() {
+		const materialItems = this.state.materials.filter((material) => material.enabled).map((material) => 
+		<IonButton key={ material.value } expand="block" href={ "/new-offer/".concat(material.value).concat("/").concat(material.humanized) }>{ material.humanized }</IonButton>);
+				
+		return <div>
+			<IonCard>
+				<img src={logo} className="App-logo" alt="logo" />
+			</IonCard>
+			<IonCard>					
+				<IonCardHeader>
+			  	<IonCardTitle><p className="ion-text-center">Ofrecer en Recyclo</p></IonCardTitle>
+				</IonCardHeader>
+		
+				<IonCardContent>
+					{ materialItems }
+				</IonCardContent>
+			</IonCard>
+		</div>
 	}
 	
 	renderTypes() {
@@ -46,7 +89,7 @@ class OfferPage extends Component {
 				</IonCard>
 				<IonCard>					
 	      	<IonCardHeader>
-	        	<IonCardTitle><p className="ion-text-center">Ofrecer { this.state.material.title }</p></IonCardTitle>
+	        	<IonCardTitle><p className="ion-text-center">Ofrecer</p></IonCardTitle>
 	      	</IonCardHeader>
 
 					<IonCardContent>
@@ -67,16 +110,9 @@ class OfferPage extends Component {
 			</div>
 	}
 	
-	renderBackForm() {
-		return <IonContent className="ion-padding">
-				<IonButton color="dark" size="small" href="/feed"><ion-icon name="arrow-back"></ion-icon> Atrás</IonButton>
-			</IonContent>
-	}
-	
   render() {
     return <IonContent>
 		 { this.renderOfferForm() }
-		 { this.renderBackForm() }
 		</IonContent>
   }
 	
