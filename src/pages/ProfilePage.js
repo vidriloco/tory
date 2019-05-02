@@ -24,7 +24,7 @@ class ProfilePage extends Component {
     		      </IonItem>
     					<IonItem>
     		        <IonLabel text-wrap>
-    							Te contactaremos en breve para coordinar la recolección de tus reciclables.
+    				    Te contactaremos en breve para coordinar la recolección de tus reciclables.
     		        </IonLabel>
     		      </IonItem>
     					<IonItem>

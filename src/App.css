@@ -20,3 +20,42 @@ p.app-intro {
 	text-align: center;
 	font-size: 14px;
 }
+
+h2.page-title {
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+p.page-subtitle {
+	font-size: 16px;
+}
+
+.no-vertical-padding {
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+div.slide-item-margin {
+	margin: 10px 60px 30px 60px;
+}
+
+h1.slide-item-title {
+	font-weight: bold;
+	font-size: 18px;
+	margin: 10px;
+	text-align: center;
+}
+
+img.slide-item-image {
+	border-radius: 50%;
+	height: 200px;
+	width: 200px;
+}
+
+img.disabled-item {
+	-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+	filter: grayscale(100%);
+	opacity: 0.4;
+}
