@@ -11,13 +11,14 @@ class AppStack extends Component {
 	render() {
 		if(this.loggedIn()) {
 			return <IonPage>
-					<Route exact path="/" render={() => <Redirect to="/new-offer"/>}/>
+					<Route exact path="/" render={() => <Redirect to="/offer"/>}/>
 					<Route exact path="/sign-up" render={() => <Redirect to="/feed"/>} />
 					<Route exact path="/landing" render={() => <Redirect to="/feed"/>} />
 					<IonTabs>
 						<IonRouterOutlet>
 							<Route exact path="/feed" component={FeedPage} />
 							<Route exact={false} path="/new-offer" component={OfferPage} />
+							<Route path="/offer" component={OfferPage} />
 							<Route exact path="/profile" component={ProfilePage} />
 						</IonRouterOutlet>
 						<IonTabBar slot="bottom">
@@ -25,7 +26,7 @@ class AppStack extends Component {
 								<IonIcon name="search" />
 								<IonLabel>Descubre</IonLabel>
 							</IonTabButton>
-							<IonTabButton tab="new-offer" href="/new-offer">
+							<IonTabButton tab="offer" href="/offer">
 								<IonIcon name="add" />
 								<IonLabel>Nuevo</IonLabel>
 							</IonTabButton>
