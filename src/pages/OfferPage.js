@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
+import { IonModal, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
 import Backend from '../Backend';
+import OfferFormPage from './OfferFormPage';
 
 class OfferPage extends Component {
 	
 	constructor(props) {
 		super(props);
 
-		this.state = { quantity: null, zone: null, units: null, materials: [], enabledMaterialIndex: 0, material: { humanized: "Lata", value: "aluminium-can" } };
+		this.state = { materials: [], enabledMaterialIndex: 0, material: { }, showModal: false };
 		
-		this.publishOffer = this.publishOffer.bind(this);
 		this.updateField = this.updateField.bind(this);
 	}
 	
@@ -58,16 +58,12 @@ class OfferPage extends Component {
 	renderOfferButton() {
 		const selectedMaterialIndex = this.state.enabledMaterialIndex;
 		const material = this.state.materials[selectedMaterialIndex];
-		
-		var url = null;
-		var button = <IonButton expand="block" href={ url }>Ofrecer</IonButton>;
-		
+				
 		if(typeof material !== "undefined") {
-			url = "/new-offer/".concat(material.value).concat("/").concat(material.humanized);
 			
 			if(material.enabled) {
 				return <div className="ion-padding">
-					<IonButton expand="block" href={ url }>Ofrecer</IonButton>
+					<IonButton expand="block" onClick={() => this.setState(() => ({ showModal: true }))}>Ofrecer</IonButton>
 				</div>;
 			} else {
 				return <div className="ion-padding">
@@ -108,93 +104,28 @@ class OfferPage extends Component {
 		});
 	}
 	
-	renderTypes() {
-		return <IonItem>
-        <IonLabel>Unidades</IonLabel>
-        <IonSelect id="units" interface="action-sheet" placeholder="Seleccionar" value={this.state.units} onIonChange={this.updateField}>
-          <IonSelectOption value="bags">Bolsas</IonSelectOption>
-          <IonSelectOption value="pieces">Piezas</IonSelectOption>
-          <IonSelectOption value="kgs">Kilos</IonSelectOption>
-        </IonSelect>
-      </IonItem>
-	}
-	
-	renderAvailableAreas() {
-		return <IonItem>
-        <IonLabel>Zona</IonLabel>
-        <IonSelect id="zone" interface="action-sheet" placeholder="Seleccionar" value={this.state.zone} onIonChange={this.updateField}>
-          <IonSelectOption value="roma-norte">Roma Norte</IonSelectOption>
-          <IonSelectOption value="roma-sur">Roma Sur</IonSelectOption>
-          <IonSelectOption value="condesa">Condesa</IonSelectOption>
-        </IonSelect>
-      </IonItem>
-	}
-	
-	renderOfferForm() {
-		return <div>
-				<IonCard>
-					<img src={logo} className="App-logo" alt="logo" />
-				</IonCard>
-				<IonCard>					
-	      	<IonCardHeader>
-	        	<IonCardTitle><h2 className="page-title no-vertical-padding">Nuevo reciclable</h2></IonCardTitle>
-						<p className="page-subtitle no-vertical-padding">Para empezar, selecciona un tipo de reciclable.</p>
-	      	</IonCardHeader>
-
-					<IonCardContent>
-						<IonInput id="quantity" placeholder="Cantidad" type="number" value={this.state.quantity} onIonChange={this.updateField}></IonInput>
-						{ this.renderTypes() }
-					</IonCardContent>
-						
-					<IonCardContent>
-						<IonLabel>Selecciona la zona donde podemos recoger los reciclables</IonLabel>
-						{ this.renderAvailableAreas() }
-						<p className="fieldNote">Por ahora estamos operando en estas zonas únicamente. Te contactaremos para acordar hora y dirección para recolectar los reciclables.</p>
-					</IonCardContent>
-						
-					<IonCardContent>
-						<IonButton expand="block" onClick={this.publishOffer}>Publicar</IonButton>
-					</IonCardContent>
-	    	</IonCard>
-			</div>
-	}
-	
   render() {		
+		const selectedMaterialIndex = this.state.enabledMaterialIndex;
+		const material = this.state.materials[selectedMaterialIndex];
+		
+		var materialDetails = {};
+		if(typeof material !== "undefined") {
+			materialDetails = { value: material.value, title: material.humanized };
+		}
+		
     return <IonContent>
+		<IonModal isOpen={this.state.showModal}
+		          onDidDismiss={() => this.setState(() => ({ showModal: false }))}>
+			<IonContent>
+			    <OfferFormPage material={ materialDetails } dismiss={ this.dismissNewOfferForm.bind(this) }/>
+			</IonContent>
+		</IonModal>
 		 { this.renderOfferPrompt() }
 		</IonContent>
   }
 	
-	publishOffer() {
-		const data = { 
-			offer: { 
-				quantity: this.state.quantity, 
-				units: this.state.units, 
-				zone: this.state.zone, 
-				material: this.state.material.value 
-			}};
-				
-		var result = fetch(Backend.offers('create'), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-					'Content-Type': 'application/json',
-					'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
-        }
-    })
-		.then(response => {
-        if (!response.ok) { throw response }
-        return response.json();
-    })
-		.then(json => {
-			alert(json.message);
-			this.props.history.push("/feed");
-    })
-		.catch(error => {
-			error.json().then(jsonError => {
-	      alert(jsonError.error);
-	    })
-    });
+	dismissNewOfferForm() {
+		this.setState({ showModal: false });
 	}
 	
 	updateField(event) {

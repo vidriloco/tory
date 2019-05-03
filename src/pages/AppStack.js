@@ -6,6 +6,7 @@ import SignUpPage from './SignUpPage';
 import FeedPage from './FeedPage';
 import OfferPage from './OfferPage';
 import ProfilePage from './ProfilePage';
+import OfferFormPage from './OfferFormPage';
 
 class AppStack extends Component {
 	render() {
@@ -17,7 +18,7 @@ class AppStack extends Component {
 					<IonTabs>
 						<IonRouterOutlet>
 							<Route exact path="/feed" component={FeedPage} />
-							<Route exact={false} path="/new-offer" component={OfferPage} />
+							<Route exact={false} path="/new-offer" component={OfferFormPage} />
 							<Route path="/offer" component={OfferPage} />
 							<Route exact path="/profile" component={ProfilePage} />
 						</IonRouterOutlet>
