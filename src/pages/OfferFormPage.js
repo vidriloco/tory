@@ -62,7 +62,7 @@ class OfferFormPage extends Component {
                     this.resetFormState();
                 }
               }
-            ]} />
+        ]} />
     }
     
     renderHeader() {
@@ -303,6 +303,10 @@ class OfferFormPage extends Component {
         this.setState({ place: null, quantity: null, zone: null, units: null, currentStep: 0 }, () => this.props.dismiss() );
     }
     
+    hasFilledUpDetailsAlready() {
+        return this.state.place !== null || this.state.quantity !== null || this.state.zone !== null || this.state.units !== null;
+    }
+    
     goNext() {
         this.setState({ currentStep: 1 });
     }
@@ -312,7 +316,11 @@ class OfferFormPage extends Component {
     }
     
     showCancelOfferAlert() {
-        this.setState({ alertShownForCancellation: true });
+        if(this.hasFilledUpDetailsAlready()) {
+            this.setState({ alertShownForCancellation: true });
+        } else {
+            this.resetFormState();
+        }
     }
 	
 	publishOffer() {
