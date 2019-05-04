@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
-import { IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
+import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
+
 import logo from '../recyclo-logo.svg';
 import progressHalfImage from '../progress-bg-1.svg';
 import progressFullImage from '../progress-bg-2.svg';
+import pin from '../recyclo-map-pin.svg';
+
 import Backend from '../Backend';
+import Autocomplete from 'react-google-autocomplete';
+import GoogleMapReact from 'google-map-react';
 
 class OfferFormPage extends Component {
 	
@@ -15,23 +20,49 @@ class OfferFormPage extends Component {
             { value: "roma-sur", title: "Roma Sur"},
             { value: "condesa", title: "Condesa"},
             { value: "juarez", title: "Juárez"},
-            { value: "cuauhtemoc", title: "Cuauhtemoc"}
+            { value: "cuauhtemoc", title: "Cuauhtemoc"},
+            { value: "other", title: "Otra zona"}
         ]
         
-		this.state = { quantity: null, zone: null, units: null, currentStep: 0, zones: zones};
+		this.state = { place: null, quantity: null, zone: null, units: null, currentStep: 0, zones: zones, alertShownForCancellation: false };
 		
 		this.publishOffer = this.publishOffer.bind(this);
 		this.updateField = this.updateField.bind(this);
+        this.resetFormState = this.resetFormState.bind(this);
+        this.showCancelOfferAlert = this.showCancelOfferAlert.bind(this);
 	}
 	
     render() {
         return <IonContent>
+            { this.renderCancelAlertDialog() }
             { this.renderHeader() }
             { this.renderOfferForm() }
-            <div className="ion-padding">
-                <IonButton expand="block" color="dark" onClick={ this.props.dismiss }>Cancelar</IonButton>
-    		</div>
+            { this.renderBottomButtons() }
         </IonContent>
+    }
+    
+    renderCancelAlertDialog() {
+        return <IonAlert
+            isOpen={this.state.alertShownForCancellation}
+            onDidDismiss={() => this.setState(() => ({ alertShownForCancellation: false }))}
+            header={'Pregunta'}
+            subHeader={'Deseas descartar los cambios?'}
+            message={'Toda la información de este reciclable se va a perder'}
+            buttons={[
+              {
+                text: 'Cancelar',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: (blah) => {
+                    this.setState({ alertShownForCancellation: false });
+                }
+              }, {
+                text: 'Aceptar',
+                handler: () => {
+                    this.resetFormState();
+                }
+              }
+            ]} />
     }
     
     renderHeader() {
@@ -45,10 +76,37 @@ class OfferFormPage extends Component {
         </div>
     }
     
+    renderBottomButtons() {
+        if(this.state.currentStep == 0) {
+            var nextButton = <IonButton expand="block" color="medium">Siguiente</IonButton>;
+            
+            
+            if(this.isMaterialPickupZoneValid() && this.isMaterialPickupAddressGiven()) {
+                nextButton = <IonButton expand="block" color="primary" onClick={ this.goNext.bind(this) }>Siguiente</IonButton>;
+            }
+            
+            return <div className="ion-padding">
+                { nextButton }
+                <IonButton expand="block" color="dark" onClick={ this.showCancelOfferAlert }>Cancelar</IonButton>
+    		</div>
+        } else {
+            var publishButton = <IonButton expand="block" color="medium">Publicar</IonButton>;
+            
+            if(this.isMaterialTypeFormValid()) {
+                publishButton = <IonButton expand="block" color="primary" onClick={ this.publishOffer }>Publicar</IonButton>;
+            }
+            
+            return <div className="ion-padding">
+                { publishButton }
+                <IonButton expand="block" color="dark" onClick={ this.showCancelOfferAlert }>Cancelar</IonButton>
+    		</div>
+        }
+    }
+    
     renderHeaderButtons() {
         if(this.state.currentStep == 0) {
-            if(this.isMaterialPickupZoneValid()) {
-                return <IonChip color="primary" outline="primary" onClick={ () => { this.setState({ currentStep: 1 }) } }>
+            if(this.isMaterialPickupZoneValid() && this.isMaterialPickupAddressGiven()) {
+                return <IonChip color="primary" outline="primary" onClick={ this.goNext.bind(this) }>
                   <IonLabel>Siguiente</IonLabel>
                   <IonIcon name="arrow-round-forward" />
                 </IonChip>
@@ -59,19 +117,19 @@ class OfferFormPage extends Component {
             }
         } else {
             
-            var nextButton = <IonChip color="success" outline="success" onClick={ this.publishOffer }>
+            var nextButton = <IonChip color="primary" outline="primary" onClick={ this.publishOffer }>
               <IonLabel>Publicar</IonLabel>
               <IonIcon name="checkmark" />
             </IonChip>;
             
             if(!this.isMaterialTypeFormValid()) {
                 nextButton = <IonChip outline="primary">
-                  <IonLabel>Tienes campos pendientes por llenar</IonLabel>
+                  <IonLabel>Publicar</IonLabel>
                 </IonChip>;
             }
             
             return <div>
-                <IonChip color="secondary" outline="secondary" onClick={ () => { this.setState({ currentStep: 0 }) } }>
+                <IonChip color="secondary" outline="secondary" onClick={ this.goPrevious.bind(this) }>
                   <IonIcon name="arrow-round-back" />
                   <IonLabel>Atrás</IonLabel>
                 </IonChip>
@@ -89,7 +147,6 @@ class OfferFormPage extends Component {
     }
     
 	renderPresentationCount() {
-
 		return <IonItem>
             <IonLabel>Unidades</IonLabel>
             <IonSelect id="units" interface="action-sheet" placeholder="Seleccionar" value={this.state.units} onIonChange={this.updateField}>
@@ -142,11 +199,17 @@ class OfferFormPage extends Component {
 	    </IonCard>
 	}
     
-    isMaterialPickupZoneValid() {
-        return this.state.zone !== null;
-    }
-    
     renderMaterialPickupZone() {
+        
+        var legend = null;
+        var mapFields = null;
+        
+        if(this.state.zone === "other") {
+            legend =  <p className="fieldNote">Por ahora estamos operando únicamente en las zonas propuestas. Te avisaremos cuando ampliemos las zonas de servicio.</p>;
+        } else if(this.isMaterialPickupZoneValid()) {
+            mapFields = this.renderMapFields();
+        }
+        
         return <IonCard>
             { this.renderProgressImage() }
           	<IonCardHeader>
@@ -157,11 +220,61 @@ class OfferFormPage extends Component {
         	<IonCardContent>
         		<p className="page-subtitle no-vertical-padding">Recoger los reciclables en</p>
         		{ this.renderAvailableAreas() }
-        		<p className="fieldNote">Por ahora estamos operando en estas zonas únicamente. Te contactaremos para acordar hora y dirección para recolectar los reciclables.</p>
+                { legend }
         	</IonCardContent>
-                
+            { mapFields }
             { this.renderCurrentStep() }
         </IonCard>
+    }
+    
+    renderMapFields() {
+        var address = "";
+        if(this.state.place !== null && typeof this.state.place !== "undefined") {
+            address = this.state.place.formatted_address;
+        }
+        
+        return <IonCardContent>
+    		<p className="page-subtitle no-vertical-padding">Escribe y selecciona la calle donde podemos recoger los reciclables</p>
+            <Autocomplete
+                defaultValue={ address }
+                onChange={ (event) => { 
+                    if(event.target.value.length == 0) {
+                        this.setState({ place: null });
+                    }
+                }}
+                style={{width: '100%'}}
+                onPlaceSelected={(place) => {
+                    console.log(place);
+                    this.setState({ place: place });
+                }}
+                types={[]}
+                componentRestrictions={{country: "mx"}} />
+                { this.renderMap() }
+    	</IonCardContent>
+    }
+    
+    renderMap() {
+        const place = this.state.place;
+        const greatPlaceStyle = {
+          position: 'absolute',
+          transform: 'translate(-50%, -50%)'
+        }
+        
+        if(place !== null && typeof place !== "undefined") {
+            const mapLocation = place.geometry.location;
+            return <div style={{ height: '50vh', width: '100%' }}><GoogleMapReact
+                      defaultZoom={19}
+                      defaultCenter={ {lat: mapLocation.lat(), lng: mapLocation.lng()} }
+                      bootstrapURLKeys={{
+                          key: 'AIzaSyCjmOEbx3qs0F2k2Cbb4Z2cdAkdMoQoJTw'
+                      }}
+                      options={ { draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true} }
+                      yesIWantToUseGoogleMapApiInternals>
+                      <div style={greatPlaceStyle}>
+                          <img width="50" height="50" src={ pin } />
+                      </div>
+                    </GoogleMapReact></div>
+        }
     }
     
     renderProgressImage() {
@@ -177,6 +290,30 @@ class OfferFormPage extends Component {
                 <h2 className="ion-text-center"><b>Paso { this.state.currentStep+1 } de 2</b></h2>
 			</IonCardContent>
     }
+    
+    isMaterialPickupZoneValid() {
+        return this.state.zone !== null && this.state.zone !== "other";
+    }
+    
+    isMaterialPickupAddressGiven() {
+        return this.state.place !== null;
+    }
+    
+    resetFormState() {
+        this.setState({ place: null, quantity: null, zone: null, units: null, currentStep: 0 }, () => this.props.dismiss() );
+    }
+    
+    goNext() {
+        this.setState({ currentStep: 1 });
+    }
+    
+    goPrevious() {
+        this.setState({ currentStep: 0 });
+    }
+    
+    showCancelOfferAlert() {
+        this.setState({ alertShownForCancellation: true });
+    }
 	
 	publishOffer() {
         
@@ -186,7 +323,8 @@ class OfferFormPage extends Component {
 				units: this.state.units, 
 				zone: this.state.zone, 
 				material: this.props.material.value 
-			}};
+			}
+        };
 				
 		var result = fetch(Backend.offers('create'), {
         method: 'POST',
