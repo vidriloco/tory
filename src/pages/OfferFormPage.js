@@ -30,6 +30,7 @@ class OfferFormPage extends Component {
 		this.updateField = this.updateField.bind(this);
         this.resetFormState = this.resetFormState.bind(this);
         this.showCancelOfferAlert = this.showCancelOfferAlert.bind(this);
+        this.resetFormState = this.resetFormState.bind(this);
 	}
 	
     render() {
@@ -89,7 +90,7 @@ class OfferFormPage extends Component {
                 { nextButton }
                 <IonButton expand="block" color="dark" onClick={ this.showCancelOfferAlert }>Cancelar</IonButton>
     		</div>
-        } else {
+        } else if(this.state.currentStep == 1) {
             var publishButton = <IonButton expand="block" color="medium">Publicar</IonButton>;
             
             if(this.isMaterialTypeFormValid()) {
@@ -99,6 +100,10 @@ class OfferFormPage extends Component {
             return <div className="ion-padding">
                 { publishButton }
                 <IonButton expand="block" color="dark" onClick={ this.showCancelOfferAlert }>Cancelar</IonButton>
+    		</div>
+        } else {
+            return <div className="ion-padding">
+                <IonButton expand="block" color="primary" onClick={ this.resetFormState }>Cerrar</IonButton>
     		</div>
         }
     }
@@ -115,7 +120,7 @@ class OfferFormPage extends Component {
                   <IonLabel>Llena los campos abajo para continuar</IonLabel>
                 </IonChip>
             }
-        } else {
+        } else if(this.state.currentStep == 1) {
             
             var nextButton = <IonChip color="primary" outline="primary" onClick={ this.publishOffer }>
               <IonLabel>Publicar</IonLabel>
@@ -139,10 +144,12 @@ class OfferFormPage extends Component {
     }
     
     renderOfferForm() {
-        if(this.state.currentStep == 1) {
+        if(this.state.currentStep == 0) {
+            return this.renderMaterialPickupZone();
+        } else if(this.state.currentStep == 1) {
             return this.renderMaterialTypeForm();
         } else {
-            return this.renderMaterialPickupZone();
+            return this.renderSuccessfulMessage();
         }
     }
     
@@ -224,6 +231,18 @@ class OfferFormPage extends Component {
         	</IonCardContent>
             { mapFields }
             { this.renderCurrentStep() }
+        </IonCard>
+    }
+    
+    renderSuccessfulMessage() {
+        return <IonCard>
+            <img src="https://media.giphy.com/media/26u4lOMA8JKSnL9Uk/giphy.gif" />
+          	<IonCardHeader>
+        	    <IonCardTitle><h2 className="ion-text-center page-title no-vertical-padding">Muchas gracias!</h2></IonCardTitle>
+          	</IonCardHeader>
+        	<IonCardContent>
+				<p className="ion-text-center page-subtitle">En breve te contactaremos para acordar la fecha y hora en la que pasaremos por los reciclables.</p>
+        	</IonCardContent>
         </IonCard>
     }
     
@@ -343,11 +362,10 @@ class OfferFormPage extends Component {
         }})
 		.then(response => {
         if (!response.ok) { throw response }
-        return response.json();
+            return response.json();
         })
 		.then(json => {
-			alert(json.message);
-			this.props.history.push("/feed");
+			this.setState({ currentStep: 2 });
         })
 		.catch(error => {
 			error.json().then(jsonError => {
