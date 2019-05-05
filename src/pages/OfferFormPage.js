@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
+import { IonLoading, IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
 
 import logo from '../recyclo-logo.svg';
 import progressHalfImage from '../progress-bg-1.svg';
@@ -24,7 +24,7 @@ class OfferFormPage extends Component {
             { value: "other", title: "Otra zona"}
         ]
         
-		this.state = { place: null, quantity: null, zone: null, units: null, currentStep: 0, zones: zones, alertShownForCancellation: false };
+		this.state = { place: null, quantity: null, zone: null, units: null, currentStep: 0, zones: zones, alertShownForCancellation: false, isBusy: false };
 		
 		this.publishOffer = this.publishOffer.bind(this);
 		this.updateField = this.updateField.bind(this);
@@ -35,11 +35,20 @@ class OfferFormPage extends Component {
 	
     render() {
         return <IonContent>
+            { this.renderLoadingIndicator() }
             { this.renderCancelAlertDialog() }
             { this.renderHeader() }
             { this.renderOfferForm() }
             { this.renderBottomButtons() }
         </IonContent>
+    }
+    
+    renderLoadingIndicator() {
+        return <IonLoading
+            isOpen={ this.state.isBusy }
+            onDidDismiss={() => this.setState(() => ({ isBusy: false }))}
+            message={ 'Por favor espera' }>
+        </IonLoading>
     }
     
     renderCancelAlertDialog() {
@@ -343,6 +352,7 @@ class OfferFormPage extends Component {
     }
 	
 	publishOffer() {
+        this.setState({ isBusy: true });
         
 		const data = { 
 			offer: { 
@@ -365,10 +375,11 @@ class OfferFormPage extends Component {
             return response.json();
         })
 		.then(json => {
-			this.setState({ currentStep: 2 });
+			this.setState({ currentStep: 2, isBusy: false });
         })
 		.catch(error => {
 			error.json().then(jsonError => {
+    			this.setState({ isBusy: false });
 	            alert(jsonError.error);
 	        })
         });
