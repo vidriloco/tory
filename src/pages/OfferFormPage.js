@@ -358,9 +358,12 @@ class OfferFormPage extends Component {
 			offer: { 
 				quantity: this.state.quantity, 
 				units: this.state.units, 
-				zone: this.state.zone, 
-				material: this.props.material.value 
-			}
+				material: this.props.material.value
+			},
+            location: {
+                place: this.state.place,
+				zone: this.state.zone
+            }
         };
 				
 		var result = fetch(Backend.offers('create'), {
