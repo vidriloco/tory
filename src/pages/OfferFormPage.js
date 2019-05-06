@@ -245,7 +245,7 @@ class OfferFormPage extends Component {
     
     renderSuccessfulMessage() {
         return <IonCard>
-            <img src="https://media.giphy.com/media/26u4lOMA8JKSnL9Uk/giphy.gif" />
+            <img src="https://media.giphy.com/media/1BgsIhVlefrARI6wTE/giphy.gif" />
           	<IonCardHeader>
         	    <IonCardTitle><h2 className="ion-text-center page-title no-vertical-padding">Muchas gracias!</h2></IonCardTitle>
           	</IonCardHeader>

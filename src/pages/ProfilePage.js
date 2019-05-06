@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
+import { IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
 import Backend from '../Backend';
 
@@ -11,10 +11,11 @@ class ProfilePage extends Component {
 		this.logout = this.logout.bind(this);
 	}
 	
-	userOffers() {
-		return <div>
-			<h4 className="ion-text-center">Lo que has ofertado</h4>
-    		<IonCard>					
+	renderUserActivity() {
+		return <IonCard>					
+                <IonCardHeader>
+                	<IonCardTitle><h4 className="ion-text-center page-title no-vertical-padding">Lo que has ofertado</h4></IonCardTitle>
+                </IonCardHeader>
     			<IonCardContent>
     				<IonList>
     		      <IonItem>
@@ -39,8 +40,6 @@ class ProfilePage extends Component {
     				</IonList>
 			
     			</IonCardContent>
-        	</IonCard>
-    		<IonCard>					
     			<IonCardContent>
     				<IonList>
     		      <IonItem>
@@ -61,14 +60,17 @@ class ProfilePage extends Component {
     				</IonList>
 			
     			</IonCardContent>
-    	    </IonCard>
-		</div>
+        	</IonCard>
 	}
     
 	logout() {
 		localStorage.setItem('token', '');
 		this.props.history.push("/");
 	}
+    
+    editUserProfile() {
+        
+    }
     
 	renderLogoutButton() {
 	    return <div className="ion-padding">
@@ -83,10 +85,23 @@ class ProfilePage extends Component {
 					<img src={logo} className="App-logo" alt="logo" />
 				</IonCard>
 			</div>
-			{ this.userOffers() }
+            { this.renderUserProfile() }
+			{ this.renderUserActivity() }
             { this.renderLogoutButton() }
 		</IonContent>
 	}
+    
+    renderUserProfile() {
+        return <div className="ion-text-center user-profile">
+            <img src="https://media.giphy.com/media/12QMzVeF4QsqTC/giphy.gif" className="user-profile-image" />
+            <h2 className="page-title no-vertical-padding">Alejandro Cruz</h2>
+            <p className="page-title no-vertical-padding">@vidriloco</p>
+            <IonChip color="primary" outline="primary" onClick={ this.editUserProfile.bind(this) }>
+                <IonIcon name="create" />
+                <IonLabel>Editar</IonLabel>
+            </IonChip>
+        </div>
+    }
 }
 
 export default ProfilePage;
