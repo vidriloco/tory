@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { IonLoading, IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
+import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
+import { ClipLoader } from 'react-spinners';
 
 import logo from '../recyclo-logo.svg';
 import progressHalfImage from '../progress-bg-1.svg';
@@ -35,20 +36,11 @@ class OfferFormPage extends Component {
 	
     render() {
         return <IonContent>
-            { this.renderLoadingIndicator() }
             { this.renderCancelAlertDialog() }
             { this.renderHeader() }
             { this.renderOfferForm() }
             { this.renderBottomButtons() }
         </IonContent>
-    }
-    
-    renderLoadingIndicator() {
-        return <IonLoading
-            isOpen={ this.state.isBusy }
-            onDidDismiss={() => this.setState(() => ({ isBusy: false }))}
-            message={ 'Por favor espera' }>
-        </IonLoading>
     }
     
     renderCancelAlertDialog() {
@@ -157,6 +149,8 @@ class OfferFormPage extends Component {
             return this.renderMaterialPickupZone();
         } else if(this.state.currentStep == 1) {
             return this.renderMaterialTypeForm();
+        } else if(this.state.currentStep == -1) {
+            return this.renderLoadingMessage();
         } else {
             return this.renderSuccessfulMessage();
         }
@@ -243,6 +237,20 @@ class OfferFormPage extends Component {
         </IonCard>
     }
     
+    renderLoadingMessage() {
+        return <IonCard>
+            <IonCardContent className="ion-text-center">
+                <br/>
+                <ClipLoader
+                    sizeUnit={"px"}
+                    size={45}
+                    color={'#FC7213'}
+                    loading={true} />
+                <p className="ion-text-center page-subtitle">Publicando tu oferta ...</p>
+            </IonCardContent>
+        </IonCard>
+    }
+    
     renderSuccessfulMessage() {
         return <IonCard>
             <img src="https://media.giphy.com/media/1BgsIhVlefrARI6wTE/giphy.gif" />
@@ -272,7 +280,6 @@ class OfferFormPage extends Component {
                 }}
                 style={{width: '100%'}}
                 onPlaceSelected={(place) => {
-                    console.log(place);
                     this.setState({ place: place });
                 }}
                 types={[]}
@@ -352,8 +359,6 @@ class OfferFormPage extends Component {
     }
 	
 	publishOffer() {
-        this.setState({ isBusy: true });
-        
 		const data = { 
 			offer: { 
 				quantity: this.state.quantity, 
@@ -365,7 +370,12 @@ class OfferFormPage extends Component {
 				zone: this.state.zone
             }
         };
-				
+        this.postOfferRequest(data);
+	}
+    
+    postOfferRequest(data) {
+        this.setState({ currentStep: -1 });
+        
 		var result = fetch(Backend.offers('create'), {
         method: 'POST',
         body: JSON.stringify(data),
@@ -378,15 +388,15 @@ class OfferFormPage extends Component {
             return response.json();
         })
 		.then(json => {
-			this.setState({ currentStep: 2, isBusy: false });
+			this.setState({ currentStep: 2 });
         })
 		.catch(error => {
+			this.setState({ currentStep: 1 });
 			error.json().then(jsonError => {
-    			this.setState({ isBusy: false });
 	            alert(jsonError.error);
 	        })
         });
-	}
+    }
 	
 	updateField(event) {
 		var newState = {};
