@@ -22,7 +22,7 @@ class BackendRoutes {
 	}
 	
 	static offers(namespace) {
-		if(namespace === "create") {
+		if(namespace === "create" || namespace === "list") {
 			return this.url().concat('/api/offers');
 		}
 	}

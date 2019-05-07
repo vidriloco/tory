@@ -1,67 +1,50 @@
 import React, { Component } from 'react';
 import { IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
+import { ClipLoader } from 'react-spinners';
+
 import logo from '../recyclo-logo.svg';
+import emptyOffersBacket from '../empty-offer-icon.svg';
 import Backend from '../Backend';
 
 class ProfilePage extends Component {
 	
 	constructor(props) {
-		super(props);
-		
-		this.logout = this.logout.bind(this);
+		super(props);	        
+        this.state = { offers: [], isBusy: false };	
+        
+		this.fetchUserOffers = this.fetchUserOffers.bind(this);
+        
+        // Nasty hack to make sure this function is called when the view becomes visible
+        this.props.history.listen((location, action) => {
+            if(location.pathname === "/profile") {
+        		this.fetchUserOffers();
+            }
+        });
 	}
-	
-	renderUserActivity() {
-		return <IonCard>					
-                <IonCardHeader>
-                	<IonCardTitle><h4 className="ion-text-center page-title no-vertical-padding">Lo que has ofertado</h4></IonCardTitle>
-                </IonCardHeader>
-    			<IonCardContent>
-    				<IonList>
-    		      <IonItem>
-    		        <IonLabel text-wrap>
-    		          Latas - 5 kilos
-    		        </IonLabel>
-    		      </IonItem>
-    					<IonItem>
-    		        <IonLabel text-wrap>
-    				    Te contactaremos en breve para coordinar la recolección de tus reciclables.
-    		        </IonLabel>
-    		      </IonItem>
-    					<IonItem>
-    						<IonChip color="primary" className="ion-color ion-color-primary ion-activatable hydrated">
-    		          <IonLabel className="sc-ion-label-ios-h sc-ion-label-ios-s hydrated">
-    								<ion-icon name="hourglass"></ion-icon> En revisión
-    							</IonLabel>
-    		        </IonChip>
-    						<IonButton color="warning" href="/edit-offer/1"><ion-icon name="create"></ion-icon></IonButton>
-    						<IonButton color="danger"><ion-icon name="trash"></ion-icon></IonButton>
-    					</IonItem>
-    				</IonList>
-			
-    			</IonCardContent>
-    			<IonCardContent>
-    				<IonList>
-    		      <IonItem>
-    		        <IonLabel text-wrap>
-    		          Latas - 10 bolsas
-    		        </IonLabel>
-    		      </IonItem>
-    					<IonItem>
-    		        <IonLabel text-wrap>
-    							Recolectado hace 2 semanas, gracias!
-    		        </IonLabel>
-    		      </IonItem>
-    					<IonItem>
-    						<IonChip color="success" className="ion-color ion-color-primary ion-activatable hydrated">
-    		          <ion-icon name="checkmark"></ion-icon> <IonLabel className="sc-ion-label-ios-h sc-ion-label-ios-s hydrated">Recolectado</IonLabel>
-    		        </IonChip>
-    					</IonItem>
-    				</IonList>
-			
-    			</IonCardContent>
-        	</IonCard>
-	}
+    
+    componentDidMount(){
+        this.fetchUserOffers();
+    }
+    
+    fetchUserOffers() {
+        this.setState({ isBusy: true });
+		var result = fetch(Backend.offers('list'), {
+			headers: {
+			    'Content-Type': 'application/json',
+			    'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+            }
+        }).then(response => {
+    		this.setState({ isBusy: false });
+            if (!response.ok) { throw response }
+            return response.json();
+        }).then(json => {
+    		this.setState({ offers: json.offers });
+        }).catch(error => {
+    		error.json().then(jsonError => {
+    	      alert(jsonError.error);
+    	    })
+        });
+    }
     
 	logout() {
 		localStorage.setItem('token', '');
@@ -71,25 +54,18 @@ class ProfilePage extends Component {
     editUserProfile() {
         
     }
-    
-	renderLogoutButton() {
-	    return <div className="ion-padding">
-			<IonButton color="dark" size="small" onClick={this.logout}>Cerrar Sesión</IonButton>
-		</div>
-	}
 
 	render() {
 		return <IonContent>
-			<div>
-				<IonCard>
-					<img src={logo} className="App-logo" alt="logo" />
-				</IonCard>
-			</div>
+            { this.renderHeader() }
             { this.renderUserProfile() }
-			{ this.renderUserActivity() }
-            { this.renderLogoutButton() }
+			{ this.renderOffers() }
 		</IonContent>
 	}
+    
+    renderHeader() {
+        return <IonCard> <img src={logo} className="App-logo" alt="logo" /></IonCard>
+    }
     
     renderUserProfile() {
         return <div className="ion-text-center user-profile">
@@ -100,7 +76,84 @@ class ProfilePage extends Component {
                 <IonIcon name="create" />
                 <IonLabel>Editar</IonLabel>
             </IonChip>
+            <IonChip color="danger" outline="primary" onClick={ this.logout.bind(this) }>
+                <IonIcon name="power" />
+                <IonLabel>Cerrar Sesión</IonLabel>
+            </IonChip>
         </div>
+    }
+    
+	renderUserOffersCard() {
+		return <IonCard>					
+            <IonCardHeader>
+            	<IonCardTitle><h4 className="ion-text-center page-title no-vertical-padding">Lo que has ofertado</h4></IonCardTitle>
+            </IonCardHeader>
+			
+            { this.renderOffers() }
+    	</IonCard>
+	}
+    
+    renderOffers() {
+        if(this.state.isBusy) {
+            return <IonCard>
+                <IonCardContent className="ion-text-center">
+                    <br/>
+                    <ClipLoader
+                        sizeUnit={"px"}
+                        size={45}
+                        color={'#FC7213'}
+                        loading={true} />
+    			    <p className="ion-text-center page-subtitle">Cargando reciclables ofertados ...</p>
+        	    </IonCardContent>
+            </IonCard> 
+        } else {
+            if(this.state.offers.length == 0) {
+                return <IonCard>
+                    <IonCardContent>
+                        <img src={emptyOffersBacket} alt="No hay ofertas" height="60" />
+                        <br/>
+        			    <p className="ion-text-center page-subtitle">Aún no has publicado ninguna oferta</p>
+            	    </IonCardContent>
+                    <IonCardContent>
+        			    <p className="ion-text-center page-subtitle">Haz tap en <b>Nuevo</b> para publicar tu primer oferta</p>
+					
+                    </IonCardContent>
+                </IonCard>
+            } else {
+        		const offers = this.state.offers.map((offer, index) => {
+                
+                    const offerStatus = offer.status === "collected" ? "checkmark-circle" : "hourglass";
+                    const offerStatusColor = offer.status === "collected" ? "success" : "primary";
+                
+        		    return <IonCardContent>
+                        <IonList>
+                            <IonItem>
+                                <IonLabel text-wrap>{ offer.title } - { offer.zone }</IonLabel>
+                            </IonItem>
+                            <IonItem>
+                                <IonLabel text-wrap>{ offer.message }</IonLabel>
+                            </IonItem>
+                            <IonItem>
+                                <IonChip color={ offerStatusColor } className="ion-color ion-color-primary ion-activatable hydrated">
+                                    <IonLabel className="sc-ion-label-ios-h sc-ion-label-ios-s hydrated">
+                                        <IonIcon name={ offerStatus }></IonIcon> { offer.localizedStatus }
+        							</IonLabel>
+        		                </IonChip>
+        						<IonButton color="danger"><IonIcon name="trash"></IonIcon></IonButton>
+        					</IonItem>
+        				</IonList>
+		
+        			</IonCardContent>
+        		}); 
+            
+                return <IonCard>
+                    <IonCardHeader>
+                    	<IonCardTitle><h4 className="ion-text-center page-title no-vertical-padding">Lo que has ofertado</h4></IonCardTitle>
+                    </IonCardHeader>
+                    { offers }
+                </IonCard>
+            }
+        }
     }
 }
 

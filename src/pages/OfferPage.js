@@ -12,9 +12,17 @@ class OfferPage extends Component {
 		this.state = { materials: [], enabledMaterialIndex: 0, material: { }, showModal: false };
 		
 		this.updateField = this.updateField.bind(this);
+		this.fetchMaterialTypes = this.fetchMaterialTypes.bind(this);
+        
+        // Nasty hack to make sure this function is called when the view becomes visible
+        this.props.history.listen((location, action) => {
+            if(location.pathname === "/offer") {
+        		this.fetchMaterialTypes();
+            }
+        });
 	}
 	
-	componentWillMount() {
+	componentDidMount() {
 		this.fetchMaterialTypes();
 	}
 	
