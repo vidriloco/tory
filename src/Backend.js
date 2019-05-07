@@ -21,10 +21,12 @@ class BackendRoutes {
 		}
 	}
 	
-	static offers(namespace) {
+	static offers(namespace, id) {
 		if(namespace === "create" || namespace === "list") {
 			return this.url().concat('/api/offers');
-		}
+		} else if(namespace === "delete") {
+			return this.url().concat('/api/offers/'.concat(id));
+	    }
 	}
 }
 

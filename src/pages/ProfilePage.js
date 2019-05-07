@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
+import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
 import { ClipLoader } from 'react-spinners';
 
 import logo from '../recyclo-logo.svg';
@@ -10,7 +10,7 @@ class ProfilePage extends Component {
 	
 	constructor(props) {
 		super(props);	        
-        this.state = { offers: [], isBusy: false };	
+        this.state = { offers: [], isBusy: false, alertShownForDeletion: false, deletionSuccessfulMessageShown: false, deletionFailedMessageShown: true };	
         
 		this.fetchUserOffers = this.fetchUserOffers.bind(this);
         
@@ -54,14 +54,82 @@ class ProfilePage extends Component {
     editUserProfile() {
         
     }
+    
+    confirmDeletionForItem(selectedItemIndex) {
+        this.setState({ alertShownForDeletion: true, selectedItemIndex: selectedItemIndex });
+    }
+    
+    deleteSelectedOffer() {
+		var result = fetch(Backend.offers('delete', this.state.selectedItemIndex), {
+            method: 'POST',
+			headers: {
+			    'Content-Type': 'application/json',
+			    'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+            }
+        }).then(response => {
+            if (!response.ok) { throw response }
+            return response.json();
+        }).then(json => {
+    		this.setState({ offers: json.offers, deletionSuccessfulMessageShown: true });
+        }).catch(error => {
+            this.setState({ deletionFailedMessageShown: true });
+    		error.json().then(jsonError => {
+    	      alert(jsonError.error);
+    	    })
+        });
+    }
 
 	render() {
 		return <IonContent>
+            { this.renderDeleteFailureAlertMessage() }
+            { this.renderDeleteSuccessAlertDialog() }
+            { this.renderDeleteConfirmationAlertDialog() }
             { this.renderHeader() }
             { this.renderUserProfile() }
 			{ this.renderOffers() }
 		</IonContent>
 	}
+    
+    renderDeleteConfirmationAlertDialog() {
+        return <IonAlert
+            isOpen={this.state.alertShownForDeletion}
+            onDidDismiss={() => this.setState(() => ({ alertShownForDeletion: false }))}
+            header={'Confirma por favor'}
+            message={'En verdad deseas eliminar esta oferta?'}
+            buttons={[
+              {
+                text: 'No',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: (blah) => {
+                    this.setState({ alertShownForDeletion: false });
+                }
+              }, {
+                text: 'Si, eliminar',
+                handler: () => {
+                    this.deleteSelectedOffer();
+                }
+              }
+        ]} />
+    }
+    
+    renderDeleteFailureAlertMessage() {
+    return <IonAlert
+        isOpen={this.state.deletionFailedMessageShown}
+        onDidDismiss={() => this.setState(() => ({ deletionFailedMessageShown: false }))}
+        header={'Lo sentimos :('}
+        message={'No fue posible eliminar esta oferta. Intenta de nuevo más tarde'}
+        buttons={['Aceptar']} />
+    }
+    
+    renderDeleteSuccessAlertDialog() {
+        return <IonAlert
+            isOpen={this.state.deletionSuccessfulMessageShown}
+            onDidDismiss={() => this.setState(() => ({ deletionSuccessfulMessageShown: false }))}
+            header={'Noticia'}
+            message={'La oferta ha sido eliminada'}
+            buttons={['Aceptar']} />
+    }
     
     renderHeader() {
         return <IonCard> <img src={logo} className="App-logo" alt="logo" /></IonCard>
@@ -72,6 +140,7 @@ class ProfilePage extends Component {
             <img src="https://media.giphy.com/media/12QMzVeF4QsqTC/giphy.gif" className="user-profile-image" />
             <h2 className="page-title no-vertical-padding">Alejandro Cruz</h2>
             <p className="page-title no-vertical-padding">@vidriloco</p>
+            <br/>
             <IonChip color="primary" outline="primary" onClick={ this.editUserProfile.bind(this) }>
                 <IonIcon name="create" />
                 <IonLabel>Editar</IonLabel>
@@ -125,7 +194,7 @@ class ProfilePage extends Component {
                     const offerStatus = offer.status === "collected" ? "checkmark-circle" : "hourglass";
                     const offerStatusColor = offer.status === "collected" ? "success" : "primary";
                 
-        		    return <IonCardContent>
+        		    return <IonCardContent key={index}>
                         <IonList>
                             <IonItem>
                                 <IonLabel text-wrap>{ offer.title } - { offer.zone }</IonLabel>
@@ -139,7 +208,9 @@ class ProfilePage extends Component {
                                         <IonIcon name={ offerStatus }></IonIcon> { offer.localizedStatus }
         							</IonLabel>
         		                </IonChip>
-        						<IonButton color="danger"><IonIcon name="trash"></IonIcon></IonButton>
+                                <IonButton color="danger" onClick={ this.confirmDeletionForItem.bind(this, offer.id) }>
+                                    <IonIcon name="trash"></IonIcon>
+                                </IonButton>
         					</IonItem>
         				</IonList>
 		
