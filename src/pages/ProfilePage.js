@@ -21,6 +21,7 @@ class ProfilePage extends Component {
             deletionFailedMessageShown: true, 
             showsEditProfileModal: false,
             showsChangeAvatarModal: false,
+            showsLogoutAlertDialog: false,
             user: {}
         };	
         
@@ -99,6 +100,10 @@ class ProfilePage extends Component {
         this.setState({ alertShownForDeletion: true, selectedItemIndex: selectedItemIndex });
     }
     
+    displayLogoutAlertDialog() {
+        this.setState({ showsLogoutAlertDialog: true });
+    }
+    
     deleteSelectedOffer() {
 		var result = fetch(Backend.offers('delete', this.state.selectedItemIndex), {
             method: 'POST',
@@ -139,8 +144,33 @@ class ProfilePage extends Component {
 			{ this.renderOffers() }
             { this.renderProfileEditModal() }
             { this.renderAvatarChangeModal() }
+            { this.renderLogoutConfirmationAlertDialog() }
 		</IonContent>
 	}
+    
+    renderLogoutConfirmationAlertDialog() {
+        return <IonAlert
+            isOpen={this.state.showsLogoutAlertDialog}
+            onDidDismiss={() => this.setState(() => ({ showsLogoutAlertDialog: false }))}
+            header={'Pregunta'}
+            subHeader={'Deseas cerrar sesión?'}
+            message={'Si lo haces, cuando quieras publicar un nuevo reciclable, tendrás que iniciar sesión nuevamente'}
+            buttons={[
+              {
+                text: 'Cancelar',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: (blah) => {
+                    this.setState({ showsLogoutAlertDialog: false });
+                }
+              }, {
+                text: 'Aceptar',
+                handler: () => {
+                    this.logout();
+                }
+              }
+        ]} />
+    }
     
     renderProfileEditModal() {
         const userDetails = this.state.user;
@@ -232,7 +262,7 @@ class ProfilePage extends Component {
                     <IonIcon name="image" />
                     <IonLabel>Cambiar avatar</IonLabel>
                 </IonChip>
-                <IonChip color="danger" outline="primary" onClick={ this.logout.bind(this) }>
+                <IonChip color="danger" outline="primary" onClick={ () => this.displayLogoutAlertDialog() }>
                     <IonIcon name="power" />
                     <IonLabel>Cerrar Sesión</IonLabel>
                 </IonChip>
