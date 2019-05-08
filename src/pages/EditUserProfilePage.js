@@ -19,7 +19,10 @@ class EditUserProfilePage extends Component {
             name: null, 
             email: null, 
             phone: null, 
-            password: null };
+            password: null,
+            successfulProfileUpdateMessageShown: false,
+            isUpdatingProfile: false
+        };
 	}
     
     componentWillReceiveProps() {
@@ -29,7 +32,6 @@ class EditUserProfilePage extends Component {
             email: this.props.user.email,
             phone: this.props.user.phone
         });
-        console.log(this.state);
     }
     
     saveProfileChanges() {
@@ -40,6 +42,8 @@ class EditUserProfilePage extends Component {
             phone: this.state.phone,
             password: this.state.password
         }
+                
+        this.setState({ isUpdatingProfile: true });
         
 		var result = fetch(Backend.users('update'), {
         method: 'POST',
@@ -53,10 +57,10 @@ class EditUserProfilePage extends Component {
             return response.json();
         })
 		.then(json => {
-			alert("Los cambios a tu perfil han sido guardados");
-            this.props.dismiss();
+            this.setState({ successfulProfileUpdateMessageShown: true, isUpdatingProfile: false });
         })
 		.catch(error => {
+            this.setState({ isUpdatingProfile: false });
 			error.json().then(jsonError => {
 	            alert(jsonError.error);
 	        })
@@ -73,42 +77,53 @@ class EditUserProfilePage extends Component {
         return <IonContent>
             { this.renderHeader() }
             { this.renderUserProfileForm() }
+            { this.renderProfileUpdateSuccessAlertDialog() }
         </IonContent>
     }
     
     renderHeader() {
-        return <div>
-    		<IonCard>
-    			<img src={logo} className="App-logo" alt="logo" />
-    		</IonCard>
-            <div className="ion-text-end ion-padding-end">
-                { this.renderHeaderButtons() }
-            </div>
-        </div>
+        return <IonCard>
+			<img src={logo} className="App-logo" alt="logo" />
+		</IonCard>
     }
     
     renderUserProfileForm() {
-        return <div>
-            <IonCard>					
-	      	    <IonCardHeader>
-	        	    <IonCardTitle><p className="ion-text-center">Editar cuenta</p></IonCardTitle>
-	      	    </IonCardHeader>
+        if(this.state.isUpdatingProfile) {
+            return <div className="ion-text-center">
+                <br/><br/>
+                <ClipLoader
+                    sizeUnit={"px"}
+                    size={100}
+                    color={'#FC7213'}
+                    loading={true} />
+        	    <p className="ion-text-center page-subtitle">Actualizando tu perfil, por favor espera</p>
+            </div>
+        } else {
+            return <div>
+                <div className="ion-text-end ion-padding-end">
+                    { this.renderHeaderButtons() }
+                </div>
+                <IonCard>					
+    	      	    <IonCardHeader>
+    	        	    <IonCardTitle><p className="ion-text-center">Editar cuenta</p></IonCardTitle>
+    	      	    </IonCardHeader>
 
-	      	    <IonCardContent>
-    				<IonInput id="name" placeholder="Tu nombre (Opcional)" value={ this.state.name } onIonChange={this.updateField}></IonInput>
-    				<IonInput id="username" placeholder="Nombre de usuario" value={ this.state.username } onIonChange={this.updateField} required></IonInput>
-    				<IonInput id="email" placeholder="Email" type="email" value={ this.state.email } onIonChange={this.updateField} required></IonInput>
+    	      	    <IonCardContent>
+        				<IonInput id="name" placeholder="Tu nombre (Opcional)" value={ this.state.name } onIonChange={this.updateField}></IonInput>
+        				<IonInput id="username" placeholder="Nombre de usuario" value={ this.state.username } onIonChange={this.updateField} required></IonInput>
+        				<IonInput id="email" placeholder="Email" type="email" value={ this.state.email } onIonChange={this.updateField} required></IonInput>
 			
-    				<IonInput id="password" placeholder="Contraseña" type="password" value={this.state.password } onIonChange={this.updateField} required></IonInput>
+        				<IonInput id="password" placeholder="Contraseña" type="password" value={this.state.password } onIonChange={this.updateField} required></IonInput>
 	
-    				<IonInput id="phone" placeholder="Tu What's App (Opcional)" value={ this.state.phone } onIonChange={this.updateField}></IonInput>
-    				<p className="fieldNote">Nos va a facilitar coordinar la recolección de los reciclables.</p>
-	      	    </IonCardContent>
-	    	</IonCard>
-            <div className="ion-padding">
-				<IonButton expand="block" onClick={ this.saveProfileChanges }>Guardar cambios</IonButton>                
-    		</div>
-        </div>
+        				<IonInput id="phone" placeholder="Tu What's App (Opcional)" value={ this.state.phone } onIonChange={this.updateField}></IonInput>
+        				<p className="fieldNote">Nos va a facilitar coordinar la recolección de los reciclables.</p>
+    	      	    </IonCardContent>
+    	    	</IonCard>
+                <div className="ion-padding">
+    				<IonButton expand="block" onClick={ this.saveProfileChanges }>Guardar cambios</IonButton>                
+        		</div>
+            </div>
+        }
     }
 
     renderHeaderButtons() {
@@ -121,6 +136,21 @@ class EditUserProfilePage extends Component {
                 <IonIcon name="checkmark" />
             </IonChip>
         </div>;
+    }
+    
+    renderProfileUpdateSuccessAlertDialog() {
+        return <IonAlert
+            isOpen={this.state.successfulProfileUpdateMessageShown}
+            onDidDismiss={() => this.setState(() => ({ successfulProfileUpdateMessageShown: false }))}
+            header={'Yupiee'}
+            message={'Los cambios a tu perfil han sido guardados'}
+            buttons={[{
+                text: 'Aceptar',
+                handler: () => {
+                    this.props.dismiss();
+                }
+              }
+        ]} />
     }
 }
 

@@ -6,9 +6,9 @@ class BackendRoutes {
 	static users(namespace) {
 		if(namespace === "create" || namespace === "details") {
 			return this.url().concat('/api/users');
-		} else if(namespace === "update") {
+		} else if(namespace === "update" || namespace === "changeAvatar") {
 			return this.url().concat('/api/users/update');
-		}
+		} 
 	}
 	
 	static sessions(namespace) {

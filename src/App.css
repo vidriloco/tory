@@ -56,17 +56,28 @@ img.slide-item-image {
 	width: 200px;
 }
 
-img.slide-item-small-image {
-	border-radius: 50%;
-	height: 140px;
-	width: 140px;
-    margin-bottom: 10px;
-}
-
 img.disabled-item {
 	-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
 	filter: grayscale(100%);
 	opacity: 0.4;
+}
+
+/* Avatar page */
+
+img.avatar-small-image {
+	border-radius: 50%;
+	height: 140px;
+	width: 140px;
+    margin-bottom: 10px;
+    border: 5px solid;
+    padding: 4px;
+    color: rgba(0,166,255, 0.2);
+}
+
+img.avatar-selected {
+    border: 5px solid;
+    padding: 4px;
+    color: #F5A623;
 }
 
 /* Profile page */
@@ -79,7 +90,7 @@ img.user-profile-image {
 	border-radius: 50%;
 	height: 150px;
 	width: 150px;
-    border: 4px solid;
-    padding: 2px;
-    color: rgba(0,166,255,0.6);
+    border: 5px solid;
+    padding: 4px;
+    color: #F5A623;
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { IonAlert, IonModal, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
 import { ClipLoader } from 'react-spinners';
 import EditUserProfilePage from './EditUserProfilePage';
+import EditUserAvatarPage from './EditUserAvatarPage';
 
 import logo from '../recyclo-logo.svg';
 import emptyOffersBacket from '../empty-offer-icon.svg';
@@ -19,6 +20,7 @@ class ProfilePage extends Component {
             deletionSuccessfulMessageShown: false, 
             deletionFailedMessageShown: true, 
             showsEditProfileModal: false,
+            showsChangeAvatarModal: false,
             user: {}
         };	
         
@@ -89,6 +91,10 @@ class ProfilePage extends Component {
         this.setState({ showsEditProfileModal: true });
     }
     
+    changeAvatar() {
+        this.setState({ showsChangeAvatarModal: true });
+    }
+    
     confirmDeletionForItem(selectedItemIndex) {
         this.setState({ alertShownForDeletion: true, selectedItemIndex: selectedItemIndex });
     }
@@ -117,6 +123,11 @@ class ProfilePage extends Component {
         this.fetchUserProfileDetails();
         this.setState({ showsEditProfileModal: false });
     }
+    
+    dismissEditUserAvatarForm() {
+        this.fetchUserProfileDetails();
+        this.setState({ showsChangeAvatarModal: false });
+    }
 
 	render() {
 		return <IonContent>
@@ -127,6 +138,7 @@ class ProfilePage extends Component {
             { this.renderUserProfile() }
 			{ this.renderOffers() }
             { this.renderProfileEditModal() }
+            { this.renderAvatarChangeModal() }
 		</IonContent>
 	}
     
@@ -136,6 +148,16 @@ class ProfilePage extends Component {
 		          onDidDismiss={() => this.setState(() => ({ showsEditProfileModal: false }))}>
 			<IonContent>
 			    <EditUserProfilePage user={ userDetails } dismiss={ this.dismissEditUserProfileForm.bind(this) }/>
+			</IonContent>
+		</IonModal>
+    }
+    
+    renderAvatarChangeModal() {
+        const avatar = this.state.user.avatar;
+        return <IonModal isOpen={this.state.showsChangeAvatarModal}
+		          onDidDismiss={() => this.setState(() => ({ showsChangeAvatarModal: false }))}>
+			<IonContent>
+			    <EditUserAvatarPage userAvatar={ avatar } dismiss={ this.dismissEditUserAvatarForm.bind(this) }/>
 			</IonContent>
 		</IonModal>
     }
@@ -204,7 +226,11 @@ class ProfilePage extends Component {
                 <br/>
                 <IonChip color="primary" outline="primary" onClick={ this.editUserProfile.bind(this) }>
                     <IonIcon name="create" />
-                    <IonLabel>Editar</IonLabel>
+                    <IonLabel>Actualizar perfil</IonLabel>
+                </IonChip>
+                <IonChip color="secondary" outline="secondary" onClick={ this.changeAvatar.bind(this) }>
+                    <IonIcon name="image" />
+                    <IonLabel>Cambiar avatar</IonLabel>
                 </IonChip>
                 <IonChip color="danger" outline="primary" onClick={ this.logout.bind(this) }>
                     <IonIcon name="power" />
