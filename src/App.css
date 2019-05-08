@@ -56,6 +56,13 @@ img.slide-item-image {
 	width: 200px;
 }
 
+img.slide-item-small-image {
+	border-radius: 50%;
+	height: 140px;
+	width: 140px;
+    margin-bottom: 10px;
+}
+
 img.disabled-item {
 	-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
 	filter: grayscale(100%);

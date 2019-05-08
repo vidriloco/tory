@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
+import { IonAlert, IonModal, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
 import { ClipLoader } from 'react-spinners';
+import EditUserProfilePage from './EditUserProfilePage';
 
 import logo from '../recyclo-logo.svg';
 import emptyOffersBacket from '../empty-offer-icon.svg';
@@ -10,20 +11,53 @@ class ProfilePage extends Component {
 	
 	constructor(props) {
 		super(props);	        
-        this.state = { offers: [], isBusy: false, alertShownForDeletion: false, deletionSuccessfulMessageShown: false, deletionFailedMessageShown: true };	
+        this.state = { 
+            offers: [], 
+            isBusy: false, 
+            isFetchingUserProfileDetails: false,
+            alertShownForDeletion: false, 
+            deletionSuccessfulMessageShown: false, 
+            deletionFailedMessageShown: true, 
+            showsEditProfileModal: false,
+            user: {}
+        };	
         
 		this.fetchUserOffers = this.fetchUserOffers.bind(this);
+        this.dismissEditUserProfileForm = this.dismissEditUserProfileForm.bind(this);
         
         // Nasty hack to make sure this function is called when the view becomes visible
         this.props.history.listen((location, action) => {
             if(location.pathname === "/profile") {
         		this.fetchUserOffers();
+                this.fetchUserProfileDetails();
             }
         });
 	}
     
     componentDidMount(){
         this.fetchUserOffers();
+        this.fetchUserProfileDetails();
+    }
+    
+    fetchUserProfileDetails() {
+        this.setState({ isFetchingUserProfileDetails: true });
+        
+		var result = fetch(Backend.users('details'), {
+			headers: {
+			    'Content-Type': 'application/json',
+			    'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+            }
+        }).then(response => {
+            if (!response.ok) { throw response }
+            return response.json();
+        }).then(json => {
+    		this.setState({ user: json.user, isFetchingUserProfileDetails: false });
+        }).catch(error => {
+    		this.setState({ isFetchingUserProfileDetails: false });
+    		error.json().then(jsonError => {
+    	      alert(jsonError.error);
+    	    })
+        });
     }
     
     fetchUserOffers() {
@@ -52,7 +86,7 @@ class ProfilePage extends Component {
 	}
     
     editUserProfile() {
-        
+        this.setState({ showsEditProfileModal: true });
     }
     
     confirmDeletionForItem(selectedItemIndex) {
@@ -78,6 +112,11 @@ class ProfilePage extends Component {
     	    })
         });
     }
+    
+    dismissEditUserProfileForm() {
+        this.fetchUserProfileDetails();
+        this.setState({ showsEditProfileModal: false });
+    }
 
 	render() {
 		return <IonContent>
@@ -87,8 +126,19 @@ class ProfilePage extends Component {
             { this.renderHeader() }
             { this.renderUserProfile() }
 			{ this.renderOffers() }
+            { this.renderProfileEditModal() }
 		</IonContent>
 	}
+    
+    renderProfileEditModal() {
+        const userDetails = this.state.user;
+        return <IonModal isOpen={this.state.showsEditProfileModal}
+		          onDidDismiss={() => this.setState(() => ({ showsEditProfileModal: false }))}>
+			<IonContent>
+			    <EditUserProfilePage user={ userDetails } dismiss={ this.dismissEditUserProfileForm.bind(this) }/>
+			</IonContent>
+		</IonModal>
+    }
     
     renderDeleteConfirmationAlertDialog() {
         return <IonAlert
@@ -136,20 +186,32 @@ class ProfilePage extends Component {
     }
     
     renderUserProfile() {
-        return <div className="ion-text-center user-profile">
-            <img src="https://media.giphy.com/media/12QMzVeF4QsqTC/giphy.gif" className="user-profile-image" />
-            <h2 className="page-title no-vertical-padding">Alejandro Cruz</h2>
-            <p className="page-title no-vertical-padding">@vidriloco</p>
-            <br/>
-            <IonChip color="primary" outline="primary" onClick={ this.editUserProfile.bind(this) }>
-                <IonIcon name="create" />
-                <IonLabel>Editar</IonLabel>
-            </IonChip>
-            <IonChip color="danger" outline="primary" onClick={ this.logout.bind(this) }>
-                <IonIcon name="power" />
-                <IonLabel>Cerrar Sesión</IonLabel>
-            </IonChip>
-        </div>
+        if(this.state.isFetchingUserProfileDetails) {
+            return <div className="ion-text-center">
+                <ClipLoader
+                    sizeUnit={"px"}
+                    size={45}
+                    color={'#FC7213'}
+                    loading={true} />
+        	    <p className="ion-text-center page-subtitle">Cargando tu perfil ...</p>
+            </div>
+        } else {
+            const user = this.state.user;
+            return <div className="ion-text-center user-profile">
+                <img src={ user.avatar } className="user-profile-image" />
+                <h2 className="page-title no-vertical-padding">{ user.name }</h2>
+                <p className="page-title no-vertical-padding">@{ user.username }</p>
+                <br/>
+                <IonChip color="primary" outline="primary" onClick={ this.editUserProfile.bind(this) }>
+                    <IonIcon name="create" />
+                    <IonLabel>Editar</IonLabel>
+                </IonChip>
+                <IonChip color="danger" outline="primary" onClick={ this.logout.bind(this) }>
+                    <IonIcon name="power" />
+                    <IonLabel>Cerrar Sesión</IonLabel>
+                </IonChip>
+            </div>
+        }
     }
     
 	renderUserOffersCard() {

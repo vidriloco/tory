@@ -92,13 +92,13 @@ class OfferPage extends Component {
 			if(!material.enabled) {
 				classNameForMaterial += " disabled-item";
 			}
-      return <IonSlide key={index}>
+            return <IonSlide key={index}>
 				<div className="slide-item-margin">
 					<img alt="" className={ classNameForMaterial } src={ material.image } />
 					<h1 className="slide-item-title">{ material.humanized }</h1>
 				</div>
 			</IonSlide>
-    })
+        })
 		
 		const thisObject = this;
 		return <IonSlides pager={true} onIonSlideTransitionEnd={ this.onSlideTransitionEnd.bind(this, thisObject) }>
