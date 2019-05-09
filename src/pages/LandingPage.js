@@ -52,7 +52,7 @@ class LandingPage extends Component {
                     	<IonCardTitle><h4 className="page-title no-vertical-padding">Cómo funciona Recyclo?</h4></IonCardTitle>
             			<p className="page-subtitle no-vertical-padding">Desliza para conocer más</p>
                   	</IonCardHeader>
-                    <img src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" className="recyclo-slider-image" />
+                    <img alt="Tutorial" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" className="recyclo-slider-image" />
                 </IonCard>
             </IonSlide>
             <IonSlide>
@@ -61,7 +61,7 @@ class LandingPage extends Component {
                     	<IonCardTitle><h4 className="page-title no-vertical-padding">Separa y limpia</h4></IonCardTitle>
             			<p className="page-subtitle no-vertical-padding">Guarda tus reciclables y tenlos listos</p>
                   	</IonCardHeader>
-                    <img src="https://media.giphy.com/media/10r895QS3fkzNC/giphy.gif" className="recyclo-slider-image" />
+                    <img alt="Tutorial" src="https://media.giphy.com/media/10r895QS3fkzNC/giphy.gif" className="recyclo-slider-image" />
                 </IonCard>
             </IonSlide>
             <IonSlide>
@@ -70,7 +70,7 @@ class LandingPage extends Component {
                     	<IonCardTitle><h4 className="page-title no-vertical-padding">Publícalos en Recyclo</h4></IonCardTitle>
             			<p className="page-subtitle no-vertical-padding">Especifica tipo, número y presentación</p>
                   	</IonCardHeader>
-                    <img src="https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif" className="recyclo-slider-image" />
+                    <img alt="Tutorial" src="https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif" className="recyclo-slider-image" />
                 </IonCard>
             </IonSlide>
             <IonSlide>
@@ -79,7 +79,7 @@ class LandingPage extends Component {
                     	<IonCardTitle><h4 className="page-title no-vertical-padding">Los pasamos a recoger</h4></IonCardTitle>
             			<p className="page-subtitle no-vertical-padding">Coordinaremos contigo el lugar y hora</p>
                   	</IonCardHeader>
-                    <img src="https://media.giphy.com/media/xTiTnhCc4SeRW74zBK/giphy.gif" className="recyclo-slider-image" />
+                    <img alt="Tutorial" src="https://media.giphy.com/media/xTiTnhCc4SeRW74zBK/giphy.gif" className="recyclo-slider-image" />
                 </IonCard>
             </IonSlide>
             <IonSlide>
@@ -88,7 +88,7 @@ class LandingPage extends Component {
                     	<IonCardTitle><h4 className="page-title no-vertical-padding">Empieza hoy</h4></IonCardTitle>
             			<p className="page-subtitle no-vertical-padding">Crea una cuenta o inicia sesión</p>
                   	</IonCardHeader>
-                    <img src="https://media.giphy.com/media/fsc7c7TYKulQ4lmmAo/giphy.gif" className="recyclo-slider-image" />
+                    <img alt="Tutorial" src="https://media.giphy.com/media/fsc7c7TYKulQ4lmmAo/giphy.gif" className="recyclo-slider-image" />
                 </IonCard>
             </IonSlide>
 	  </IonSlides>
@@ -141,7 +141,7 @@ class LandingPage extends Component {
         
         this.setState({ isGettingLoggedIn: true });
         
-		var result = fetch(Backend.sessions('create'), {
+		fetch(Backend.sessions('create'), {
         	method: 'POST',
         	body: JSON.stringify(data),
         	headers: {

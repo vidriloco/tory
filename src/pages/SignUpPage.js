@@ -8,7 +8,7 @@ import { ClipLoader } from 'react-spinners';
 class SignUpPage extends Component {
 	
 	constructor(props) {
-    super(props);
+        super(props);
 
 		this.state = {
 			name: null,
@@ -98,7 +98,7 @@ class SignUpPage extends Component {
 		
         this.setState({ isSigningUp: true });
         
-		var result = fetch(Backend.users('create'), {
+		fetch(Backend.users('create'), {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {

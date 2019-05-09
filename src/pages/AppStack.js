@@ -3,7 +3,7 @@ import { IonIcon, IonLabel, IonRouterOutlet, IonPage, IonTabs, IonTabBar, IonTab
 import { Route, Redirect } from 'react-router';
 import LandingPage from './LandingPage';
 import SignUpPage from './SignUpPage';
-import FeedPage from './FeedPage';
+import DiscoverPage from './DiscoverPage';
 import OfferPage from './OfferPage';
 import ProfilePage from './ProfilePage';
 import OfferFormPage from './OfferFormPage';
@@ -17,13 +17,13 @@ class AppStack extends Component {
 					<Route exact path="/landing" render={() => <Redirect to="/feed"/>} />
 					<IonTabs>
 						<IonRouterOutlet>
-							<Route exact path="/feed" component={FeedPage} />
+							<Route exact path="/discover" component={DiscoverPage} />
 							<Route exact={false} path="/new-offer" component={OfferFormPage} />
 							<Route path="/offer" component={OfferPage} />
 							<Route exact path="/profile" component={ProfilePage} />
 						</IonRouterOutlet>
 						<IonTabBar slot="bottom">
-							<IonTabButton tab="feed" href="/feed">
+							<IonTabButton tab="discover" href="/discover">
 								<IonIcon name="search" />
 								<IonLabel>Descubre</IonLabel>
 							</IonTabButton>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonRow, IonCol, IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
+import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonInput, IonChip, IonLabel } from '@ionic/react';
 import { ClipLoader } from 'react-spinners';
 
 import logo from '../recyclo-logo.svg';
@@ -45,21 +45,19 @@ class EditUserProfilePage extends Component {
                 
         this.setState({ isUpdatingProfile: true });
         
-		var result = fetch(Backend.users('update'), {
-        method: 'POST',
-        body: JSON.stringify({ user: userData }),
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
-        }})
-		.then(response => {
+		fetch(Backend.users('update'), {
+            method: 'POST',
+            body: JSON.stringify({ user: userData }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+            }
+        }).then(response => {
         if (!response.ok) { throw response }
             return response.json();
-        })
-		.then(json => {
+        }).then(json => {
             this.setState({ successfulProfileUpdateMessageShown: true, isUpdatingProfile: false });
-        })
-		.catch(error => {
+        }).catch(error => {
             this.setState({ isUpdatingProfile: false });
 			error.json().then(jsonError => {
 	            alert(jsonError.error);

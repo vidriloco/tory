@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonRow, IonCol, IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonChip, IonLabel } from '@ionic/react';
+import { IonRow, IonCol, IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonChip, IonLabel } from '@ionic/react';
 import { ClipLoader } from 'react-spinners';
 
 import logo from '../recyclo-logo.svg';
@@ -26,7 +26,7 @@ class EditUserAvatarPage extends Component {
         
         this.setState({ isUpdatingAvatar: true });
         
-		var result = fetch(Backend.users('changeAvatar'), {
+		fetch(Backend.users('changeAvatar'), {
             method: 'POST',
             body: JSON.stringify({ user: userData }),
             headers: {
@@ -117,7 +117,7 @@ class EditUserAvatarPage extends Component {
 			if(avatarURL === this.state.avatarURL) {
 				avatarClasses = "avatar-small-image avatar-selected";
 			}
-            return <IonCol size="6" className="ion-text-center hydrated" onClick={ this.selectAvatarWithURL.bind(this, avatarURL) }>
+            return <IonCol key={index} size="6" className="ion-text-center hydrated" onClick={ this.selectAvatarWithURL.bind(this, avatarURL) }>
                 <img alt="" className={ avatarClasses } src={ avatarURL } />
             </IonCol>
         })

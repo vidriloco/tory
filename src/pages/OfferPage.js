@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonModal, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
+import { IonModal, IonContent, IonCard, IonCardHeader, IonCardTitle, IonButton, IonSlides, IonSlide } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
 import Backend from '../Backend';
 import OfferFormPage from './OfferFormPage';
@@ -27,24 +27,21 @@ class OfferPage extends Component {
 	}
 	
 	fetchMaterialTypes() {
-		var result = fetch(Backend.materials('list'), {
-			headers: {
-					'Content-Type': 'application/json',
-					'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
-        }
-    })
-		.then(response => {
+        fetch(Backend.materials('list'), {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+            }
+        }).then(response => {
         if (!response.ok) { throw response }
-        return response.json();
-    })
-		.then(json => {
-			this.setState({ materials: json.materials });
-    })
-		.catch(error => {
+            return response.json();
+        }).then(json => {
+            this.setState({ materials: json.materials });
+        }).catch(error => {
 			error.json().then(jsonError => {
-	      alert(jsonError.error);
-	    })
-    });
+	            alert(jsonError.error);
+	        })
+        });
 	}
 	
 	renderOfferPrompt() {
@@ -53,10 +50,10 @@ class OfferPage extends Component {
 				<img src={logo} className="App-logo" alt="logo" />
 			</IonCard>
 			<IonCard>					
-      	<IonCardHeader>
-        	<IonCardTitle><h2 className="page-title no-vertical-padding">Nuevo reciclable</h2></IonCardTitle>
-					<p className="page-subtitle no-vertical-padding">Selecciona el tipo de reciclable que vas a ofrecer.</p>
-      	</IonCardHeader>
+              	<IonCardHeader>
+                	<IonCardTitle><h2 className="page-title no-vertical-padding">Nuevo reciclable</h2></IonCardTitle>
+        			<p className="page-subtitle no-vertical-padding">Selecciona el tipo de reciclable que vas a ofrecer.</p>
+              	</IonCardHeader>
 				{ this.renderSlider() }
 			</IonCard>
 			{ this.renderOfferButton() }
@@ -83,7 +80,7 @@ class OfferPage extends Component {
 	}
 	
 	renderSlider() {
-		if(this.state.materials.length == 0) {
+		if(this.state.materials.length === 0) {
 			return 
 		}
 		

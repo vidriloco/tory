@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonSlides, IonSlide, IonChip, IonLabel } from '@ionic/react';
+import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonChip, IonLabel } from '@ionic/react';
 import { ClipLoader } from 'react-spinners';
 
 import logo from '../recyclo-logo.svg';
@@ -79,7 +79,7 @@ class OfferFormPage extends Component {
     }
     
     renderBottomButtons() {
-        if(this.state.currentStep == 0) {
+        if(this.state.currentStep === 0) {
             var nextButton = <IonButton expand="block" color="medium">Siguiente</IonButton>;
             
             
@@ -91,7 +91,7 @@ class OfferFormPage extends Component {
                 { nextButton }
                 <IonButton expand="block" color="dark" onClick={ this.showCancelOfferAlert }>Cancelar</IonButton>
     		</div>
-        } else if(this.state.currentStep == 1) {
+        } else if(this.state.currentStep === 1) {
             var publishButton = <IonButton expand="block" color="medium">Publicar</IonButton>;
             
             if(this.isMaterialTypeFormValid()) {
@@ -110,7 +110,7 @@ class OfferFormPage extends Component {
     }
     
     renderHeaderButtons() {
-        if(this.state.currentStep == 0) {
+        if(this.state.currentStep === 0) {
             if(this.isMaterialPickupZoneValid() && this.isMaterialPickupAddressGiven()) {
                 return <IonChip color="primary" outline="primary" onClick={ this.goNext.bind(this) }>
                   <IonLabel>Siguiente</IonLabel>
@@ -121,7 +121,7 @@ class OfferFormPage extends Component {
                   <IonLabel>Llena los campos abajo para continuar</IonLabel>
                 </IonChip>
             }
-        } else if(this.state.currentStep == 1) {
+        } else if(this.state.currentStep === 1) {
             
             var nextButton = <IonChip color="primary" outline="primary" onClick={ this.publishOffer }>
               <IonLabel>Publicar</IonLabel>
@@ -145,11 +145,11 @@ class OfferFormPage extends Component {
     }
     
     renderOfferForm() {
-        if(this.state.currentStep == 0) {
+        if(this.state.currentStep === 0) {
             return this.renderMaterialPickupZone();
-        } else if(this.state.currentStep == 1) {
+        } else if(this.state.currentStep === 1) {
             return this.renderMaterialTypeForm();
-        } else if(this.state.currentStep == -1) {
+        } else if(this.state.currentStep === -1) {
             return this.renderLoadingMessage();
         } else {
             return this.renderSuccessfulMessage();
@@ -253,7 +253,7 @@ class OfferFormPage extends Component {
     
     renderSuccessfulMessage() {
         return <IonCard>
-            <img src="https://media.giphy.com/media/1BgsIhVlefrARI6wTE/giphy.gif" />
+            <img alt="Muchas gracias" src="https://media.giphy.com/media/1BgsIhVlefrARI6wTE/giphy.gif" />
           	<IonCardHeader>
         	    <IonCardTitle><h2 className="ion-text-center page-title no-vertical-padding">Muchas gracias!</h2></IonCardTitle>
           	</IonCardHeader>
@@ -274,7 +274,7 @@ class OfferFormPage extends Component {
             <Autocomplete
                 defaultValue={ address }
                 onChange={ (event) => { 
-                    if(event.target.value.length == 0) {
+                    if(event.target.value.length === 0) {
                         this.setState({ place: null });
                     }
                 }}
@@ -306,17 +306,17 @@ class OfferFormPage extends Component {
                       options={ { draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true} }
                       yesIWantToUseGoogleMapApiInternals>
                       <div style={greatPlaceStyle}>
-                          <img width="50" height="50" src={ pin } />
+                          <img alt="Pin" width="50" height="50" src={ pin } />
                       </div>
                     </GoogleMapReact></div>
         }
     }
     
     renderProgressImage() {
-        if(this.state.currentStep == 0) {
-            return <img src={ progressHalfImage } />;
+        if(this.state.currentStep === 0) {
+            return <img alt="" src={ progressHalfImage } />;
         } else {
-            return <img src={ progressFullImage } />;
+            return <img alt="" src={ progressFullImage } />;
         }
     }
     
@@ -376,21 +376,19 @@ class OfferFormPage extends Component {
     postOfferRequest(data) {
         this.setState({ currentStep: -1 });
         
-		var result = fetch(Backend.offers('create'), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
-        }})
-		.then(response => {
+		fetch(Backend.offers('create'), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+            }
+        }).then(response => {
         if (!response.ok) { throw response }
             return response.json();
-        })
-		.then(json => {
+        }).then(json => {
 			this.setState({ currentStep: 2 });
-        })
-		.catch(error => {
+        }).catch(error => {
 			this.setState({ currentStep: 1 });
 			error.json().then(jsonError => {
 	            alert(jsonError.error);

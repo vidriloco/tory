@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonAlert, IonModal, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonChip } from '@ionic/react';
+import { IonAlert, IonModal, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonChip } from '@ionic/react';
 import { ClipLoader } from 'react-spinners';
 import EditUserProfilePage from './EditUserProfilePage';
 import EditUserAvatarPage from './EditUserAvatarPage';
@@ -45,7 +45,7 @@ class ProfilePage extends Component {
     fetchUserProfileDetails() {
         this.setState({ isFetchingUserProfileDetails: true });
         
-		var result = fetch(Backend.users('details'), {
+		fetch(Backend.users('details'), {
 			headers: {
 			    'Content-Type': 'application/json',
 			    'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
@@ -65,7 +65,7 @@ class ProfilePage extends Component {
     
     fetchUserOffers() {
         this.setState({ isBusy: true });
-		var result = fetch(Backend.offers('list'), {
+		fetch(Backend.offers('list'), {
 			headers: {
 			    'Content-Type': 'application/json',
 			    'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
@@ -105,7 +105,7 @@ class ProfilePage extends Component {
     }
     
     deleteSelectedOffer() {
-		var result = fetch(Backend.offers('delete', this.state.selectedItemIndex), {
+		fetch(Backend.offers('delete', this.state.selectedItemIndex), {
             method: 'POST',
 			headers: {
 			    'Content-Type': 'application/json',
@@ -250,7 +250,7 @@ class ProfilePage extends Component {
         } else {
             const user = this.state.user;
             return <div className="ion-text-center user-profile">
-                <img src={ user.avatar } className="user-profile-image" />
+                <img alt="Avatar" src={ user.avatar } className="user-profile-image" />
                 <h2 className="page-title no-vertical-padding">{ user.name }</h2>
                 <p className="page-title no-vertical-padding">@{ user.username }</p>
                 <br/>
@@ -294,7 +294,7 @@ class ProfilePage extends Component {
         	    </IonCardContent>
             </IonCard> 
         } else {
-            if(this.state.offers.length == 0) {
+            if(this.state.offers.length === 0) {
                 return <IonCard>
                     <IonCardContent>
                         <img src={emptyOffersBacket} alt="No hay ofertas" height="60" />
