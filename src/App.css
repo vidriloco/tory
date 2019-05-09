@@ -37,6 +37,16 @@ p.page-subtitle {
 	margin-top: 0px;
 }
 
+/* Landing page */
+
+.slogan-recyclo {
+    font-weight: 300;
+    font-size: 18px;
+    margin-left: 15px;
+    margin-right: 15px;
+    text-align: center;
+}
+
 /* Offer page */
 
 div.slide-item-margin {

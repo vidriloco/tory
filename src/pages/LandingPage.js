@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
 import Backend from '../Backend';
 
@@ -23,14 +23,15 @@ class LandingPage extends Component {
 		    <IonContent>
 			    <IonCard>
 				    <img src={logo} className="App-logo" alt="logo" />
+                    <p className="slogan-recyclo">Facilitamos la recolección de residuos reciclables mediante el <i>crowdsourcing</i></p>
 			    </IonCard>
+                { this.renderSlider() }
                 { this.renderActionCards() }
             </IonContent>
         );
     }
   
     renderActionCards() {
-        
         var newAccountInvitationCard = null;
         
         if(!this.state.isGettingLoggedIn) {
@@ -42,6 +43,56 @@ class LandingPage extends Component {
             { newAccountInvitationCard }
         </div>
     }
+    
+	renderSlider() {		
+		return <IonSlides pager={true}>
+            <IonSlide>
+                <IonCard>
+                  	<IonCardHeader>
+                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Cómo funciona Recyclo?</h4></IonCardTitle>
+            			<p className="page-subtitle no-vertical-padding">Desliza para conocer más</p>
+                  	</IonCardHeader>
+                    <img src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" className="recyclo-slider-image" />
+                </IonCard>
+            </IonSlide>
+            <IonSlide>
+                <IonCard>
+                  	<IonCardHeader>
+                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Separa y limpia</h4></IonCardTitle>
+            			<p className="page-subtitle no-vertical-padding">Guarda tus reciclables y tenlos listos</p>
+                  	</IonCardHeader>
+                    <img src="https://media.giphy.com/media/10r895QS3fkzNC/giphy.gif" className="recyclo-slider-image" />
+                </IonCard>
+            </IonSlide>
+            <IonSlide>
+                <IonCard>
+                  	<IonCardHeader>
+                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Publícalos en Recyclo</h4></IonCardTitle>
+            			<p className="page-subtitle no-vertical-padding">Especifica tipo, número y presentación</p>
+                  	</IonCardHeader>
+                    <img src="https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif" className="recyclo-slider-image" />
+                </IonCard>
+            </IonSlide>
+            <IonSlide>
+                <IonCard>
+                  	<IonCardHeader>
+                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Los pasamos a recoger</h4></IonCardTitle>
+            			<p className="page-subtitle no-vertical-padding">Coordinaremos contigo el lugar y hora</p>
+                  	</IonCardHeader>
+                    <img src="https://media.giphy.com/media/xTiTnhCc4SeRW74zBK/giphy.gif" className="recyclo-slider-image" />
+                </IonCard>
+            </IonSlide>
+            <IonSlide>
+                <IonCard>
+                  	<IonCardHeader>
+                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Empieza hoy</h4></IonCardTitle>
+            			<p className="page-subtitle no-vertical-padding">Crea una cuenta o inicia sesión</p>
+                  	</IonCardHeader>
+                    <img src="https://media.giphy.com/media/fsc7c7TYKulQ4lmmAo/giphy.gif" className="recyclo-slider-image" />
+                </IonCard>
+            </IonSlide>
+	  </IonSlides>
+	}
     
     renderNewAccountInvitationCard() {
         return <IonCard>
@@ -58,8 +109,7 @@ class LandingPage extends Component {
     renderLoginCard() {
         var defaultContent = <div>
             <IonCardHeader>
-                <IonCardTitle>Bienvenido</IonCardTitle>
-                <IonCardSubtitle>Si ya tienes una cuenta, inicia sesión</IonCardSubtitle>
+                <IonCardTitle>Iniciar Sesión</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
                 <IonInput id="login" placeholder="Nombre de usuario o Email" type="email" value={this.state.login} onIonChange={this.updateField}></IonInput>
@@ -82,8 +132,6 @@ class LandingPage extends Component {
         }
         
         return <IonCard>
-          <img alt="" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" />
-
           { defaultContent }
         </IonCard>
     }
