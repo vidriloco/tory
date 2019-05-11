@@ -97,10 +97,31 @@ div.user-profile {
 }
 
 img.user-profile-image {
-	border-radius: 50%;
 	height: 150px;
 	width: 150px;
     border: 5px solid;
     padding: 4px;
+}
+
+img.material-map-image, img.user-profile-image-small, img.user-profile-image {
+	border-radius: 50%;
     color: #F5A623;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Discover page */
+
+img.user-profile-image-small {
+    border: 3px solid;
+    padding: 2px;
+}
+
+img.material-map-image {
+    border: 3px solid;
+    padding: 2px;
+    color: #179dfe;
+    height: 60px !important;
+    width: 60px !important;
 }

@@ -19,7 +19,7 @@ class OfferFormPage extends Component {
         const zones = [
             { value: "roma-norte", title: "Roma Norte"},
             { value: "roma-sur", title: "Roma Sur"},
-            { value: "condesa", title: "Condesa"},
+            { value: "condesa", title: "Hipódromo Condesa"},
             { value: "juarez", title: "Juárez"},
             { value: "cuauhtemoc", title: "Cuauhtemoc"},
             { value: "other", title: "Otra zona"}
@@ -270,7 +270,7 @@ class OfferFormPage extends Component {
         }
         
         return <IonCardContent>
-    		<p className="page-subtitle no-vertical-padding">Escribe y selecciona la calle donde podemos recoger los reciclables</p>
+    		<p className="page-subtitle no-vertical-padding">Escribe y selecciona la calle y número donde podemos recoger los reciclables</p>
             <Autocomplete
                 defaultValue={ address }
                 onChange={ (event) => { 
