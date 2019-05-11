@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { IonContent, IonCard, IonAlert, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import logo from '../recyclo-logo.svg';
 import Backend from '../Backend';
 
@@ -16,7 +16,8 @@ class SignUpPage extends Component {
 			email: null,
 			password: null,
 			phone: null,
-            isSigningUp: false
+            isSigningUp: false,
+            successfullySignedUpMessageShown: false
 		}
 		
 		this.updateField = this.updateField.bind(this);
@@ -36,6 +37,7 @@ class SignUpPage extends Component {
                     <img src={logo} className="App-logo" alt="logo" />
 				</IonCard>
                 { this.renderCreateAccountCard() }
+                { this.renderSuccessfullySignedUpMessageDialog() }
 				{ loginInvitationCard }
 			</IonContent>
         );
@@ -93,6 +95,21 @@ class SignUpPage extends Component {
         </IonCard>
     }
     
+    renderSuccessfullySignedUpMessageDialog() {
+        return <IonAlert
+            isOpen={this.state.successfullySignedUpMessageShown}
+            onDidDismiss={() => this.setState(() => ({ successfullySignedUpMessageShown: false }))}
+            header={'Bienvenido a Recyclo'}
+            message={'Con tu nueva cuenta podrás publicar reciclables y así ayudar al medio ambiente y a tu ciudad!'}
+            buttons={[{
+                text: 'Comenzar',
+                handler: () => {
+                    this.props.history.push("/");
+                }
+              }
+        ]} />
+    }
+    
 	createUserAccount() {
 		var data = { user: this.state };
 		
@@ -108,10 +125,9 @@ class SignUpPage extends Component {
             if (!response.ok) { throw response }
                 return response.json();
         }).then(json => {
-            this.setState({ isSigningUp: false });
+            this.setState({ isSigningUp: false, successfullySignedUpMessageShown: true });
 			var tokenValue = json.token;
 			localStorage.setItem('token', tokenValue);
-			this.props.history.push("/");
         }).catch(error => {
             this.setState({ isSigningUp: false });
             
