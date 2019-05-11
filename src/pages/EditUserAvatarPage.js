@@ -147,8 +147,8 @@ class EditUserAvatarPage extends Component {
         return <IonAlert
             isOpen={this.state.successfulAvatarUploadMessageShown}
             onDidDismiss={() => this.setState(() => ({ successfulAvatarUploadMessageShown: false }))}
-            header={'Yupiee'}
-            message={'Ya estás estrenando nuevo avatar'}
+            header={'Listo!'}
+            message={'Hemos cambiado tu avatar :)'}
             buttons={[{
                 text: 'Aceptar',
                 handler: () => {

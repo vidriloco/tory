@@ -71,7 +71,7 @@ class OfferPage extends Component {
             
 			if(!material.enabled) {
                 button = <IonButton expand="block" color="medium">Ofrecer</IonButton>;
-                messageForNotAllowedMaterial = <p className="ion-text-center">Uy, aún no estamos recibiendo este tipo de reciclable :(</p>;
+                messageForNotAllowedMaterial = <p className="ion-text-center">Uy, esta semana no estamos recibiendo este tipo de reciclable :(</p>;
 			} 
             
 			return <div className="ion-padding">
