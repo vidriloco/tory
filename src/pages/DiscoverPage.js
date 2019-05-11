@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { IonContent, IonCard, IonCardContent, IonChip, IonLabel, IonList, IonItem, IonAvatar } from '@ionic/react';
 import Backend from '../Backend';
+import { ClipLoader } from 'react-spinners';
 
 import GoogleMapReact from 'google-map-react';
 
@@ -49,16 +50,28 @@ class DiscoverPage extends Component {
     }
     
 	render() {
-        const donations = this.state.donations.map((donation, index) => {
-            return this.renderDonation(donation, index);
-        });
+        var content = <div className="ion-text-center">
+                <br/><br/>
+                <ClipLoader
+                    sizeUnit={"px"}
+                    size={40}
+                    color={'#FC7213'}
+                    loading={true} />
+        	    <p className="ion-text-center page-subtitle">Cargando contenido ...</p>
+            </div>
+                    
+        if(!this.state.isFetchingDonations) {
+            content = this.state.donations.map((donation, index) => {
+                return this.renderDonation(donation, index);
+            });
+        }
         
-		return <IonContent>
-			<IonCard>
-				<img src={logo} className="App-logo" alt="logo" />
-			</IonCard>
-            { donations }
-		</IonContent>
+    	return <IonContent>
+    		<IonCard>
+    			<img src={logo} className="App-logo" alt="logo" />
+    		</IonCard>
+            { content }
+    	</IonContent>
 	}
     
     renderDonation(donation, index) {
