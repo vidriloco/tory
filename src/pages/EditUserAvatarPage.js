@@ -12,11 +12,33 @@ class EditUserAvatarPage extends Component {
 		super(props);
         
         this.saveProfileChanges = this.saveProfileChanges.bind(this);
-		this.state = { avatarURL: "", isUpdatingAvatar: false, successfulAvatarUploadMessageShown: false };
+		this.state = { avatarURL: "", isUpdatingAvatar: false, successfulAvatarUploadMessageShown: false, avatars: [] };
 	}
     
     componentWillReceiveProps() {
         this.setState({ avatarURL: this.props.userAvatar });
+        this.fetchDonations();
+    }
+    
+    fetchDonations() {
+        this.setState({ isFetchingAvatars: true });
+        
+		fetch(Backend.avatars('list'), {
+			headers: {
+			    'Content-Type': 'application/json',
+			    'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+            }
+        }).then(response => {
+            if (!response.ok) { throw response }
+            return response.json();
+        }).then(json => {
+    		this.setState({ avatars: json.avatars, isFetchingAvatars: false });
+        }).catch(error => {
+    		this.setState({ isFetchingAvatars: false });
+    		error.json().then(jsonError => {
+    	      alert(jsonError.error);
+    	    })
+        });
     }
     
     saveProfileChanges() {
@@ -105,20 +127,14 @@ class EditUserAvatarPage extends Component {
     }
     
     renderAvatarList() {
-        const avatars = [
-            "https://media.giphy.com/media/GObRHYaUQWf3q/giphy.gif",
-            "https://media.giphy.com/media/12QMzVeF4QsqTC/giphy.gif",
-            "https://media.giphy.com/media/APPbIpIe0xrVe/giphy.gif",
-            "https://media.giphy.com/media/KhlVSyjsbx18A/giphy.gif"
-        ];
-        
-        const avatarList = avatars.map((avatarURL, index) => {
+
+        const avatarList = this.state.avatars.map((avatar) => {
 			var avatarClasses = "avatar-small-image";
-			if(avatarURL === this.state.avatarURL) {
+			if(avatar.url === this.state.avatarURL) {
 				avatarClasses = "avatar-small-image avatar-selected";
 			}
-            return <IonCol key={index} size="6" className="ion-text-center hydrated" onClick={ this.selectAvatarWithURL.bind(this, avatarURL) }>
-                <img alt="" className={ avatarClasses } src={ avatarURL } />
+            return <IonCol key={avatar.id} size="6" className="ion-text-center hydrated" onClick={ this.selectAvatarWithURL.bind(this, avatar.url) }>
+                <img alt={ avatar.name } className={ avatarClasses } src={ avatar.url } />
             </IonCol>
         })
         

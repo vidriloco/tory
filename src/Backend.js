@@ -36,6 +36,12 @@ class BackendRoutes {
 			return this.url().concat('/api/donations');
 		}
     }
+    
+    static avatars(namespace) {
+        if(namespace === "list") {
+            return this.url().concat('/api/avatars');
+        }
+    }
 }
 
 export default BackendRoutes;
