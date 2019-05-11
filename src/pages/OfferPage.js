@@ -44,7 +44,7 @@ class OfferPage extends Component {
         });
 	}
 	
-	renderOfferPrompt() {
+	renderOfferPrompt() {        
 		return <div>
 			<IonCard>
 				<img src={logo} className="App-logo" alt="logo" />
@@ -66,16 +66,18 @@ class OfferPage extends Component {
 				
 		if(typeof material !== "undefined") {
 			
-			if(material.enabled) {
-				return <div className="ion-padding">
-					<IonButton expand="block" onClick={() => this.setState(() => ({ showModal: true }))}>Ofrecer</IonButton>
-				</div>;
-			} else {
-				return <div className="ion-padding">
-					<IonButton expand="block" color="medium">Ofrecer</IonButton>
-					<p className="fieldNote">Lo sentimos, pero aún no estamos recibiendo este tipo de material</p>
-				</div>;
-			}
+            var button = <IonButton expand="block" onClick={() => this.setState(() => ({ showModal: true }))}>Ofrecer</IonButton>;
+            var messageForNotAllowedMaterial = null;
+            
+			if(!material.enabled) {
+                button = <IonButton expand="block" color="medium">Ofrecer</IonButton>;
+                messageForNotAllowedMaterial = <p className="ion-text-center">Uy, aún no estamos recibiendo este tipo de reciclable :(</p>;
+			} 
+            
+			return <div className="ion-padding">
+                { messageForNotAllowedMaterial }
+                { button }
+			</div>;
 		}
 	}
 	
@@ -86,9 +88,11 @@ class OfferPage extends Component {
 		
 		const materials = this.state.materials.map((material, index) => {
 			var classNameForMaterial = "slide-item-image";
-			if(!material.enabled) {
+			
+            if(!material.enabled) {
 				classNameForMaterial += " disabled-item";
 			}
+            
             return <IonSlide key={index}>
 				<div className="slide-item-margin">
 					<img alt="" className={ classNameForMaterial } src={ material.image } />
