@@ -3,8 +3,8 @@ import { IonAlert, IonModal, IonIcon, IonContent, IonCard, IonCardHeader, IonCar
 import { ClipLoader } from 'react-spinners';
 import EditUserProfilePage from './EditUserProfilePage';
 import EditUserAvatarPage from './EditUserAvatarPage';
+import HeaderComponent from '../components/HeaderComponent';
 
-import logo from '../recyclo-logo.svg';
 import emptyOffersBacket from '../empty-offer-icon.svg';
 import Backend from '../Backend';
 
@@ -139,7 +139,7 @@ class ProfilePage extends Component {
             { this.renderDeleteFailureAlertMessage() }
             { this.renderDeleteSuccessAlertDialog() }
             { this.renderDeleteConfirmationAlertDialog() }
-            { this.renderHeader() }
+            <HeaderComponent />
             { this.renderUserProfile() }
 			{ this.renderOffers() }
             { this.renderProfileEditModal() }
@@ -231,10 +231,6 @@ class ProfilePage extends Component {
             header={'Noticia'}
             message={'La oferta ha sido eliminada'}
             buttons={['Aceptar']} />
-    }
-    
-    renderHeader() {
-        return <IonCard> <img src={logo} className="App-logo" alt="logo" /></IonCard>
     }
     
     renderUserProfile() {

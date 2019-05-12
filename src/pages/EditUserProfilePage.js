@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonInput, IonChip, IonLabel } from '@ionic/react';
+import HeaderComponent from '../components/HeaderComponent'
+
 import { ClipLoader } from 'react-spinners';
-
-import logo from '../recyclo-logo.svg';
-
 import Backend from '../Backend';
 
 class EditUserProfilePage extends Component {
@@ -73,16 +72,10 @@ class EditUserProfilePage extends Component {
     
     render() {
         return <IonContent>
-            { this.renderHeader() }
+            <HeaderComponent/>
             { this.renderUserProfileForm() }
             { this.renderProfileUpdateSuccessAlertDialog() }
         </IonContent>
-    }
-    
-    renderHeader() {
-        return <IonCard>
-			<img src={logo} className="App-logo" alt="logo" />
-		</IonCard>
     }
     
     renderUserProfileForm() {

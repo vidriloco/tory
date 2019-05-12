@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { IonRow, IonCol, IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonChip, IonLabel } from '@ionic/react';
+import { IonRow, IonCol, IonAlert, IonIcon, IonContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonChip, IonLabel } from '@ionic/react';
+import HeaderComponent from '../components/HeaderComponent'
 import { ClipLoader } from 'react-spinners';
-
-import logo from '../recyclo-logo.svg';
-
 import Backend from '../Backend';
 
 class EditUserAvatarPage extends Component {
@@ -78,7 +76,7 @@ class EditUserAvatarPage extends Component {
     render() {
         return <IonContent>
             { this.renderAvatarUpdateSuccessAlertDialog() }
-            { this.renderHeader() }
+            <HeaderComponent/>
             { this.renderContent() }
         </IonContent>
     }
@@ -108,10 +106,6 @@ class EditUserAvatarPage extends Component {
                 </IonCardContent>
             </div>
         }
-    }
-    
-    renderHeader() {
-        return <IonCard> <img src={logo} className="App-logo" alt="logo" /></IonCard>
     }
     
     renderHeaderButtons() {

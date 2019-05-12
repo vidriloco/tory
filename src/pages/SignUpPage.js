@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { IonContent, IonCard, IonAlert, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
-import logo from '../recyclo-logo.svg';
+import HeaderComponent from '../components/HeaderComponent';
 import Backend from '../Backend';
 
 import { ClipLoader } from 'react-spinners';
@@ -33,9 +33,7 @@ class SignUpPage extends Component {
         
         return (
             <IonContent>
-				<IonCard>
-                    <img src={logo} className="App-logo" alt="logo" />
-				</IonCard>
+				<HeaderComponent/>
                 { this.renderCreateAccountCard() }
                 { this.renderSuccessfullySignedUpMessageDialog() }
 				{ loginInvitationCard }

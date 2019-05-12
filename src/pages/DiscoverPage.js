@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { IonContent, IonCard, IonCardContent, IonChip, IonLabel, IonList, IonItem, IonAvatar } from '@ionic/react';
+import { IonContent, IonCard, IonLabel, IonList, IonItem, IonAvatar } from '@ionic/react';
+import HeaderComponent from '../components/HeaderComponent'
 import Backend from '../Backend';
 import { ClipLoader } from 'react-spinners';
 
 import GoogleMapReact from 'google-map-react';
 
-import logo from '../recyclo-logo.svg';
 
 class DiscoverPage extends Component {
 	
@@ -67,9 +67,7 @@ class DiscoverPage extends Component {
         }
         
     	return <IonContent>
-    		<IonCard>
-    			<img src={logo} className="App-logo" alt="logo" />
-    		</IonCard>
+    		<HeaderComponent/>
             { content }
     	</IonContent>
 	}
@@ -90,7 +88,6 @@ class DiscoverPage extends Component {
             </IonList>
             { this.renderMapForLocationWith(donation.latitude, donation.longitude, donation.material) }
         </IonCard>
-        return 
     }
     
     renderMapForLocationWith(latitude, longitude, material) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { IonModal, IonContent, IonCard, IonCardHeader, IonCardTitle, IonButton, IonSlides, IonSlide } from '@ionic/react';
-import logo from '../recyclo-logo.svg';
+import HeaderComponent from '../components/HeaderComponent';
 import Backend from '../Backend';
 import OfferFormPage from './OfferFormPage';
 
@@ -46,9 +46,7 @@ class OfferPage extends Component {
 	
 	renderOfferPrompt() {        
 		return <div>
-			<IonCard>
-				<img src={logo} className="App-logo" alt="logo" />
-			</IonCard>
+			<HeaderComponent/>
 			<IonCard>					
               	<IonCardHeader>
                 	<IonCardTitle><h2 className="page-title no-vertical-padding">Nuevo reciclable</h2></IonCardTitle>

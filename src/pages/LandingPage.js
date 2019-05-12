@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
-import logo from '../recyclo-logo.svg';
 import Backend from '../Backend';
+import HeaderComponent from '../components/HeaderComponent'
 
 import { ClipLoader } from 'react-spinners';
 
@@ -21,10 +21,7 @@ class LandingPage extends Component {
     render() {
         return (
 		    <IonContent>
-			    <IonCard>
-				    <img src={logo} className="App-logo" alt="logo" />
-                    <p className="slogan-recyclo">Facilitamos la recolección de residuos reciclables mediante el <i>crowdsourcing</i></p>
-			    </IonCard>
+                <HeaderComponent slogan={ "Facilitamos la recolección de residuos reciclables mediante el <i>crowdsourcing</i>" }/>
                 { this.renderSlider() }
                 { this.renderActionCards() }
             </IonContent>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { IonAlert, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonItem, IonSelect, IonSelectOption, IonInput, IonChip, IonLabel } from '@ionic/react';
 import { ClipLoader } from 'react-spinners';
 
-import logo from '../recyclo-logo.svg';
+import HeaderComponent from '../components/HeaderComponent';
 import progressHalfImage from '../progress-bg-1.svg';
 import progressFullImage from '../progress-bg-2.svg';
 import pin from '../recyclo-map-pin.svg';
@@ -69,9 +69,7 @@ class OfferFormPage extends Component {
     
     renderHeader() {
         return <div>
-    		<IonCard>
-    			<img src={logo} className="App-logo" alt="logo" />
-    		</IonCard>
+    		<HeaderComponent />
             <div className="ion-text-end ion-padding-end">
                 { this.renderHeaderButtons() }
             </div>

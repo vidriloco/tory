@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/react';
-import logo from '../recyclo-logo.svg';
+import HeaderComponent from '../components/HeaderComponent'
 
 class EditOfferPage extends Component {
 	
@@ -28,9 +28,7 @@ class EditOfferPage extends Component {
 	
 	renderOfferForm() {
 		return <div>
-				<IonCard>
-					<img src={logo} className="App-logo" alt="logo" />
-				</IonCard>
+				<HeaderComponent/>
 				<IonCard>					
 	      	<IonCardHeader>
 	        	<IonCardTitle><p className="ion-text-center">Ofrecer latas</p></IonCardTitle>
