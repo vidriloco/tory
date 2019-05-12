@@ -46,6 +46,13 @@ p.page-subtitle {
     text-align: center;
 }
 
+.recyclo-slider-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 130px;
+}
+
 /* Offer page */
 
 div.slide-item-margin {
