@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { Platform, IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import Backend from '../Backend';
 import HeaderComponent from '../components/HeaderComponent'
 
@@ -16,6 +16,15 @@ class LandingPage extends Component {
 		
 		this.updateField = this.updateField.bind(this);
 		this.loginAccount = this.loginAccount.bind(this);
+        this.slides = React.createRef();
+    }
+    
+    goNext() {
+        this.slides.current.slideNext();
+    }
+    
+    goPrevious() {
+        this.slides.current.slidePrev();
     }
     
     render() {
@@ -41,54 +50,59 @@ class LandingPage extends Component {
         </div>
     }
     
-	renderSlider() {		
-		return <IonSlides pager={true}>
-            <IonSlide>
-                <IonCard>
-                  	<IonCardHeader>
-                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Cómo funciona Recyclo?</h4></IonCardTitle>
-            			<p className="page-subtitle no-vertical-padding">Desliza para conocer más</p>
-                  	</IonCardHeader>
-                    <img alt="Tutorial" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" className="recyclo-slider-image" />
-                </IonCard>
-            </IonSlide>
-            <IonSlide>
-                <IonCard>
-                  	<IonCardHeader>
-                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Separa y limpia</h4></IonCardTitle>
-            			<p className="page-subtitle no-vertical-padding">Guarda tus reciclables y tenlos listos</p>
-                  	</IonCardHeader>
-                    <img alt="Tutorial" src="https://media.giphy.com/media/10r895QS3fkzNC/giphy.gif" className="recyclo-slider-image" />
-                </IonCard>
-            </IonSlide>
-            <IonSlide>
-                <IonCard>
-                  	<IonCardHeader>
-                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Publícalos en Recyclo</h4></IonCardTitle>
-            			<p className="page-subtitle no-vertical-padding">Especifica tipo, número y presentación</p>
-                  	</IonCardHeader>
-                    <img alt="Tutorial" src="https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif" className="recyclo-slider-image" />
-                </IonCard>
-            </IonSlide>
-            <IonSlide>
-                <IonCard>
-                  	<IonCardHeader>
-                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Los pasamos a recoger</h4></IonCardTitle>
-            			<p className="page-subtitle no-vertical-padding">Coordinaremos contigo el lugar y hora</p>
-                  	</IonCardHeader>
-                    <img alt="Tutorial" src="https://media.giphy.com/media/xTiTnhCc4SeRW74zBK/giphy.gif" className="recyclo-slider-image" />
-                </IonCard>
-            </IonSlide>
-            <IonSlide>
-                <IonCard>
-                  	<IonCardHeader>
-                    	<IonCardTitle><h4 className="page-title no-vertical-padding">Empieza hoy</h4></IonCardTitle>
-            			<p className="page-subtitle no-vertical-padding">Crea una cuenta o inicia sesión</p>
-                  	</IonCardHeader>
-                    <img alt="Tutorial" src="https://media.giphy.com/media/fsc7c7TYKulQ4lmmAo/giphy.gif" className="recyclo-slider-image" />
-                </IonCard>
-            </IonSlide>
-	  </IonSlides>
+	renderSlider() {
+
+		return <div>
+            <div className="swiper-button-next" onClick={ this.goNext.bind(this) }></div>
+            <div className="swiper-button-prev" onClick={ this.goPrevious.bind(this) }></div>
+            <IonSlides pager={true} ref={this.slides}>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Cómo funciona Recyclo?</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Desliza para conocer más</p>
+                      	</IonCardHeader>
+                        <img alt="Tutorial" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" className="recyclo-slider-image" />
+                    </IonCard>
+                </IonSlide>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Separa y limpia</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Guarda tus reciclables y tenlos listos</p>
+                      	</IonCardHeader>
+                        <img alt="Tutorial" src="https://media.giphy.com/media/10r895QS3fkzNC/giphy.gif" className="recyclo-slider-image" />
+                    </IonCard>
+                </IonSlide>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Publícalos en Recyclo</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Especifica tipo, número y presentación</p>
+                      	</IonCardHeader>
+                        <img alt="Tutorial" src="https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif" className="recyclo-slider-image" />
+                    </IonCard>
+                </IonSlide>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Los pasamos a recoger</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Coordinaremos contigo el lugar y hora</p>
+                      	</IonCardHeader>
+                        <img alt="Tutorial" src="https://media.giphy.com/media/xTiTnhCc4SeRW74zBK/giphy.gif" className="recyclo-slider-image" />
+                    </IonCard>
+                </IonSlide>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Empieza hoy</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Crea una cuenta o inicia sesión</p>
+                      	</IonCardHeader>
+                        <img alt="Tutorial" src="https://media.giphy.com/media/fsc7c7TYKulQ4lmmAo/giphy.gif" className="recyclo-slider-image" />
+                    </IonCard>
+                </IonSlide>
+    	  </IonSlides>
+        </div>
 	}
     
     renderNewAccountInvitationCard() {

@@ -20,6 +20,8 @@ class OfferPage extends Component {
         		this.fetchMaterialTypes();
             }
         });
+        
+        this.slides = React.createRef();
 	}
 	
 	componentDidMount() {
@@ -100,9 +102,13 @@ class OfferPage extends Component {
         })
 		
 		const thisObject = this;
-		return <IonSlides pager={true} onIonSlideTransitionEnd={ this.onSlideTransitionEnd.bind(this, thisObject) }>
-			{ materials }
-	  </IonSlides>
+		return <div>
+            <div className="swiper-button-next" onClick={ this.goNext.bind(this) }></div>
+            <div className="swiper-button-prev" onClick={ this.goPrevious.bind(this) }></div>
+            <IonSlides pager={true} onIonSlideTransitionEnd={ this.onSlideTransitionEnd.bind(this, thisObject) } ref={this.slides}>
+    			{ materials }
+    	  </IonSlides>
+        </div>
 	}
 	
 	onSlideTransitionEnd(stateRef, slider) {
@@ -111,25 +117,25 @@ class OfferPage extends Component {
 		});
 	}
 	
-  render() {		
-		const selectedMaterialIndex = this.state.enabledMaterialIndex;
-		const material = this.state.materials[selectedMaterialIndex];
-		
-		var materialDetails = {};
-		if(typeof material !== "undefined") {
-			materialDetails = { value: material.value, title: material.humanized };
-		}
-		
-    return <IonContent>
-		<IonModal isOpen={this.state.showModal}
-		          onDidDismiss={() => this.setState(() => ({ showModal: false }))}>
-			<IonContent>
-			    <OfferFormPage material={ materialDetails } dismiss={ this.dismissNewOfferForm.bind(this) }/>
-			</IonContent>
-		</IonModal>
-		 { this.renderOfferPrompt() }
-		</IonContent>
-  }
+    render() {		
+        const selectedMaterialIndex = this.state.enabledMaterialIndex;
+        const material = this.state.materials[selectedMaterialIndex];
+
+        var materialDetails = {};
+        if(typeof material !== "undefined") {
+            materialDetails = { value: material.value, title: material.humanized };
+        }
+
+        return <IonContent>
+            <IonModal isOpen={this.state.showModal}
+                onDidDismiss={() => this.setState(() => ({ showModal: false }))}>
+                <IonContent>
+                    <OfferFormPage material={ materialDetails } dismiss={ this.dismissNewOfferForm.bind(this) }/>
+                </IonContent>
+            </IonModal>
+            { this.renderOfferPrompt() }
+        </IonContent>
+    }
 	
 	dismissNewOfferForm() {
 		this.setState({ showModal: false });
@@ -140,6 +146,14 @@ class OfferPage extends Component {
 		newState[event.target.id] = event.target.value;
 		this.setState(newState);
 	}
+    
+    goNext() {
+        this.slides.current.slideNext();
+    }
+    
+    goPrevious() {
+        this.slides.current.slidePrev();
+    }
 }
 
 export default OfferPage;
