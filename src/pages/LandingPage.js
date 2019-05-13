@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Platform, IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import Backend from '../Backend';
+import Styling from '../Styling';
+
 import HeaderComponent from '../components/HeaderComponent'
 
 import { ClipLoader } from 'react-spinners';
@@ -123,8 +125,8 @@ class LandingPage extends Component {
                 <IonCardTitle>Iniciar Sesión</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-                <IonInput id="login" placeholder="Nombre de usuario o Email" type="email" value={this.state.login} onIonChange={this.updateField}></IonInput>
-                <IonInput id="password" placeholder="Contraseña" type="password" value={this.state.password} onIonChange={this.updateField}></IonInput>
+                <IonInput style={ Styling.inputField() } background="red" id="login" placeholder="Nombre de usuario o Email" type="email" value={this.state.login} onIonChange={this.updateField}></IonInput>
+                <IonInput style={ Styling.inputField() } id="password" placeholder="Contraseña" type="password" value={this.state.password} onIonChange={this.updateField}></IonInput>
   
                 <IonButton expand="block" color="warning" onClick={this.loginAccount}>Entrar</IonButton>
             </IonCardContent>

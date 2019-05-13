@@ -4,6 +4,7 @@ import HeaderComponent from '../components/HeaderComponent'
 
 import { ClipLoader } from 'react-spinners';
 import Backend from '../Backend';
+import Styling from '../Styling';
 
 class EditUserProfilePage extends Component {
 	
@@ -100,13 +101,13 @@ class EditUserProfilePage extends Component {
     	      	    </IonCardHeader>
 
     	      	    <IonCardContent>
-        				<IonInput id="name" placeholder="Tu nombre (Opcional)" value={ this.state.name } onIonChange={this.updateField}></IonInput>
-        				<IonInput id="username" placeholder="Nombre de usuario" value={ this.state.username } onIonChange={this.updateField} required></IonInput>
-        				<IonInput id="email" placeholder="Email" type="email" value={ this.state.email } onIonChange={this.updateField} required></IonInput>
+        				<IonInput id="name" style={ Styling.inputField() } placeholder="Tu nombre (Opcional)" value={ this.state.name } onIonChange={this.updateField}></IonInput>
+        				<IonInput id="username" style={ Styling.inputField() } placeholder="Nombre de usuario" value={ this.state.username } onIonChange={this.updateField} required></IonInput>
+        				<IonInput id="email" style={ Styling.inputField() } placeholder="Email" type="email" value={ this.state.email } onIonChange={this.updateField} required></IonInput>
 			
-        				<IonInput id="password" placeholder="Contraseña" type="password" value={this.state.password } onIonChange={this.updateField} required></IonInput>
+        				<IonInput id="password" style={ Styling.inputField() } placeholder="Contraseña" type="password" value={this.state.password } onIonChange={this.updateField} required></IonInput>
 	
-        				<IonInput id="phone" placeholder="Tu What's App (Opcional)" value={ this.state.phone } onIonChange={this.updateField}></IonInput>
+        				<IonInput id="phone" style={ Styling.inputField() } placeholder="Tu What's App (Opcional)" value={ this.state.phone } onIonChange={this.updateField}></IonInput>
         				<p className="fieldNote">Nos va a facilitar coordinar la recolección de los reciclables.</p>
     	      	    </IonCardContent>
     	    	</IonCard>

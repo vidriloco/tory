@@ -8,6 +8,8 @@ import progressFullImage from '../progress-bg-2.svg';
 import pin from '../recyclo-map-pin.svg';
 
 import Backend from '../Backend';
+import Styling from '../Styling';
+
 import Autocomplete from 'react-google-autocomplete';
 import GoogleMapReact from 'google-map-react';
 
@@ -115,9 +117,7 @@ class OfferFormPage extends Component {
                   <IonIcon name="arrow-round-forward" />
                 </IonChip>
             } else {
-                return <IonChip outline="primary">
-                  <IonLabel>Llena los campos abajo para continuar</IonLabel>
-                </IonChip>
+                return <IonLabel>Llena los campos abajo para continuar</IonLabel>
             }
         } else if(this.state.currentStep === 1) {
             
@@ -157,7 +157,7 @@ class OfferFormPage extends Component {
 	renderPresentationCount() {
 		return <IonItem>
             <IonLabel>Unidades</IonLabel>
-            <IonSelect id="units" interface="action-sheet" placeholder="Seleccionar" value={this.state.units} onIonChange={this.updateField}>
+            <IonSelect style={ Styling.inputField() } id="units" interface="action-sheet" placeholder="Seleccionar" value={this.state.units} onIonChange={this.updateField}>
                 <IonSelectOption value="bags">Bolsas</IonSelectOption>
                 <IonSelectOption value="pieces">Piezas</IonSelectOption>
                 <IonSelectOption value="kilos">Kilos</IonSelectOption>
@@ -172,7 +172,7 @@ class OfferFormPage extends Component {
     
 		return <IonItem>
         <IonLabel>Zona</IonLabel>
-        <IonSelect id="zone" interface="action-sheet" placeholder="Seleccionar" value={this.state.zone} onIonChange={this.updateField}>
+        <IonSelect style={ Styling.inputField() } id="zone" interface="action-sheet" placeholder="Seleccionar" value={this.state.zone} onIonChange={this.updateField}>
             { zones }
         </IonSelect>
       </IonItem>
@@ -200,7 +200,7 @@ class OfferFormPage extends Component {
           	</IonCardHeader>
                 
 			<IonCardContent>
-				<IonInput id="quantity" placeholder="Cantidad" type="number" value={this.state.quantity} onIonChange={this.updateField}></IonInput>
+				<IonInput id="quantity" style={ Styling.inputField() } placeholder="Cantidad" type="number" value={this.state.quantity} onIonChange={this.updateField}></IonInput>
 			</IonCardContent>
                 
 			{ this.renderCurrentStep() }
