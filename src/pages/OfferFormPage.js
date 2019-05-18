@@ -6,6 +6,7 @@ import HeaderComponent from '../components/HeaderComponent';
 import progressHalfImage from '../progress-bg-1.svg';
 import progressFullImage from '../progress-bg-2.svg';
 import pin from '../recyclo-map-pin.svg';
+import sadPanda from '../sad-panda.svg';
 
 import Backend from '../Backend';
 import Styling from '../Styling';
@@ -213,7 +214,11 @@ class OfferFormPage extends Component {
         var mapFields = null;
         
         if(this.state.zone === "other") {
-            legend =  <p className="fieldNote">Por ahora estamos operando únicamente en las zonas propuestas. Te avisaremos cuando ampliemos las zonas de servicio.</p>;
+            legend = <div>
+                <br/>
+                <img className="ion-margin-top ion-margin-bottom" src={ sadPanda } alt="Triste" width="60vw" height="60vh" />
+                <p className="ion-margin-top ion-text-center">Por ahora estamos operando únicamente en las zonas propuestas. <br/><b>Por favor, intenta otra ubicación para la recolección</b></p>
+            </div>;
         } else if(this.isMaterialPickupZoneValid()) {
             mapFields = this.renderMapFields();
         }
