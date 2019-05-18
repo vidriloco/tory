@@ -45,6 +45,10 @@ class DiscoverPage extends Component {
     		this.setState({ isFetchingDonations: false });
     		error.json().then(jsonError => {
     	      alert(jsonError.error);
+              // Reset session on client-side if token is not authentic
+              if(jsonError.reason === "not-authenticated") {
+          		this.logout();
+              }
     	    })
         });
     }

@@ -59,6 +59,10 @@ class ProfilePage extends Component {
     		this.setState({ isFetchingUserProfileDetails: false });
     		error.json().then(jsonError => {
     	      alert(jsonError.error);
+              // Reset session on client-side if token is not authentic
+              if(jsonError.reason === "not-authenticated") {
+          		this.logout();
+              }
     	    })
         });
     }
@@ -78,7 +82,11 @@ class ProfilePage extends Component {
     		this.setState({ offers: json.offers });
         }).catch(error => {
     		error.json().then(jsonError => {
-    	      alert(jsonError.error);
+                alert(jsonError.error);
+                // Reset session on client-side if token is not authentic
+                if(jsonError.reason === "not-authenticated") {
+            		this.logout();
+                }
     	    })
         });
     }
