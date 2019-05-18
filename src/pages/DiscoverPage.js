@@ -97,7 +97,7 @@ class DiscoverPage extends Component {
         }
         
         return <div style={{ height: '30vh', width: '100%' }}><GoogleMapReact
-          defaultZoom={14}
+          defaultZoom={12}
           defaultCenter={ {lat: latitude, lng: longitude} }
           bootstrapURLKeys={{
               key: 'AIzaSyCjmOEbx3qs0F2k2Cbb4Z2cdAkdMoQoJTw'
