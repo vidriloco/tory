@@ -298,7 +298,7 @@ class OfferFormPage extends Component {
           transform: 'translate(-50%, -50%)'
         }
         
-        if(place !== null && typeof place !== "undefined") {
+        if(place !== null && typeof place !== "undefined" && typeof place.geometry !== "undefined") {
             const mapLocation = place.geometry.location;
             return <div style={{ height: '50vh', width: '100%' }}><GoogleMapReact
                       defaultZoom={19}
