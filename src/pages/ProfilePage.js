@@ -161,7 +161,7 @@ class ProfilePage extends Component {
             isOpen={this.state.showsLogoutAlertDialog}
             onDidDismiss={() => this.setState(() => ({ showsLogoutAlertDialog: false }))}
             header={'Pregunta'}
-            subHeader={'Deseas cerrar sesión?'}
+            subHeader={'¿Deseas cerrar sesión?'}
             message={'Si lo haces, cuando quieras publicar un nuevo reciclable, tendrás que iniciar sesión nuevamente'}
             buttons={[
               {
@@ -205,7 +205,7 @@ class ProfilePage extends Component {
             isOpen={this.state.alertShownForDeletion}
             onDidDismiss={() => this.setState(() => ({ alertShownForDeletion: false }))}
             header={'Confirma por favor'}
-            message={'En verdad deseas eliminar esta oferta?'}
+            message={'¿En verdad deseas eliminar esta oferta?'}
             buttons={[
               {
                 text: 'No',

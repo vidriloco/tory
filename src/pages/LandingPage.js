@@ -61,7 +61,7 @@ class LandingPage extends Component {
                 <IonSlide>
                     <IonCard>
                       	<IonCardHeader>
-                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Cómo funciona Recyclo?</h4></IonCardTitle>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">¿Cómo funciona Recyclo?</h4></IonCardTitle>
                 			<p className="page-subtitle no-vertical-padding">Desliza para conocer más</p>
                       	</IonCardHeader>
                         <img alt="Tutorial" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" className="recyclo-slider-image" />
@@ -110,7 +110,7 @@ class LandingPage extends Component {
     renderNewAccountInvitationCard() {
         return <IonCard>
               <IonCardHeader>
-                  <IonCardTitle>Nuevo?</IonCardTitle>
+                  <IonCardTitle>¿Eres nuevo?</IonCardTitle>
                   <IonCardSubtitle>Empieza a publicar tus reciclables hoy</IonCardSubtitle>
               </IonCardHeader>
               <IonCardContent>

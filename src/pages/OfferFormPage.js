@@ -24,7 +24,7 @@ class OfferFormPage extends Component {
             { value: "roma-sur", title: "Roma Sur"},
             { value: "condesa", title: "Hipódromo Condesa"},
             { value: "juarez", title: "Juárez"},
-            { value: "cuauhtemoc", title: "Cuauhtemoc"},
+            { value: "cuauhtemoc", title: "Colonia Cuauhtémoc"},
             { value: "other", title: "Otra zona"}
         ]
         
@@ -51,7 +51,7 @@ class OfferFormPage extends Component {
             isOpen={this.state.alertShownForCancellation}
             onDidDismiss={() => this.setState(() => ({ alertShownForCancellation: false }))}
             header={'Pregunta'}
-            subHeader={'Deseas descartar los cambios?'}
+            subHeader={'¿Deseas descartar los cambios?'}
             message={'Toda la información de este reciclable se va a perder'}
             buttons={[
               {
@@ -173,7 +173,7 @@ class OfferFormPage extends Component {
     
 		return <IonItem>
         <IonLabel>Zona</IonLabel>
-        <IonSelect style={ Styling.inputField() } id="zone" interface="action-sheet" placeholder="Seleccionar" value={this.state.zone} onIonChange={this.updateField}>
+        <IonSelect style={ Styling.inputField() } id="zone" interface="action-sheet" cancelText="Cancelar" okText="Aceptar" placeholder="Seleccionar" value={this.state.zone} onIonChange={this.updateField}>
             { zones }
         </IonSelect>
       </IonItem>

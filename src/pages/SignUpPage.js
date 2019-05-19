@@ -45,7 +45,7 @@ class SignUpPage extends Component {
     renderLoginInvitationCard() {
         return <IonCard>					
       	    <IonCardHeader>
-        	    <IonCardTitle>Ya tienes cuenta?</IonCardTitle>
+        	    <IonCardTitle>¿Ya tienes cuenta?</IonCardTitle>
         	    <IonCardSubtitle>No pierdas más tiempo y publica tus reciclables hoy</IonCardSubtitle>
       	    </IonCardHeader>
             
