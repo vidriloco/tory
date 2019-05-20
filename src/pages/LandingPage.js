@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { IonChip, IonLabel, IonIcon, IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { IonModal, IonChip, IonLabel, IonIcon, IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import Backend from '../Backend';
 import Styling from '../Styling';
 import contactUs from '../contact-us.svg';
+import PrivacyPolicyPage from './PrivacyPolicyPage';
 
 import HeaderComponent from '../components/HeaderComponent'
 
@@ -14,7 +15,8 @@ class LandingPage extends Component {
         
         this.state = {
 			login: null,
-			password: null
+			password: null,
+            isShowingPrivacyPolicy: false
 		}
 		
 		this.updateField = this.updateField.bind(this);
@@ -22,6 +24,7 @@ class LandingPage extends Component {
         this.shareTwitter = this.shareTwitter.bind(this);
         this.shareFacebook = this.shareFacebook.bind(this);
         this.shareEmail = this.shareEmail.bind(this);
+        this.openPrivacyNotice = this.openPrivacyNotice.bind(this);
         
         this.slides = React.createRef();
     }
@@ -40,8 +43,18 @@ class LandingPage extends Component {
                 <HeaderComponent slogan={ "Facilitamos la recolección de residuos reciclables mediante el <i>crowdsourcing</i>" }/>
                 { this.renderSlider() }
                 { this.renderActionCards() }
+                { this.renderPrivacyPolicyModal() }
             </IonContent>
         );
+    }
+    
+    renderPrivacyPolicyModal() {
+        return <IonModal isOpen={this.state.isShowingPrivacyPolicy} 
+                onDidDismiss={() => this.setState(() => ({ isShowingPrivacyPolicy: false }))}>
+                <IonContent>
+                    <PrivacyPolicyPage dismiss={ this.dismissPrivacyPolicyModal.bind(this) }/>
+                </IonContent>
+            </IonModal>
     }
   
     renderActionCards() {
@@ -55,6 +68,7 @@ class LandingPage extends Component {
             { this.renderLoginCard() }
             { newAccountInvitationCard }
             { this.renderSocialMediaInfo() }
+            { this.renderPrivacyPolicy() }
         </div>
     }
     
@@ -178,6 +192,29 @@ class LandingPage extends Component {
                 </div>
             </IonCardContent>
         </IonCard>
+    }
+    
+    renderPrivacyPolicy() {
+        return <IonCard>
+          	<IonCardHeader>
+        	    <IonCardTitle><h4 className="page-title no-vertical-padding ion-text-center">Aviso de Privacidad</h4></IonCardTitle>
+          	</IonCardHeader>
+        	<IonCardContent>                
+                <div className="ion-text-center ion-margin">
+                    <IonChip color="sucess" outline="sucess" onClick={ this.openPrivacyNotice }>
+                        <IonLabel>Consultar</IonLabel>
+                    </IonChip>
+                </div>
+            </IonCardContent>
+        </IonCard>
+    }
+    
+    openPrivacyNotice() {
+        this.setState({ isShowingPrivacyPolicy: true });
+    }
+    
+    dismissPrivacyPolicyModal() {
+        this.setState({ isShowingPrivacyPolicy: false });
     }
     
     socialMediaShare() {
