@@ -7,6 +7,7 @@ import progressHalfImage from '../progress-bg-1.svg';
 import progressFullImage from '../progress-bg-2.svg';
 import pin from '../recyclo-map-pin.svg';
 import sadPanda from '../sad-panda.svg';
+import shareSocialMedia from '../share.svg';
 
 import Backend from '../Backend';
 import Styling from '../Styling';
@@ -35,6 +36,8 @@ class OfferFormPage extends Component {
         this.resetFormState = this.resetFormState.bind(this);
         this.showCancelOfferAlert = this.showCancelOfferAlert.bind(this);
         this.resetFormState = this.resetFormState.bind(this);
+        this.shareOnTwitter = this.shareOnTwitter.bind(this);
+        this.shareOnFacebook = this.shareOnFacebook.bind(this);
 	}
 	
     render() {
@@ -151,7 +154,7 @@ class OfferFormPage extends Component {
         } else if(this.state.currentStep === -1) {
             return this.renderLoadingMessage();
         } else {
-            return this.renderSuccessfulMessage();
+            return <div> { this.renderSuccessfulMessage() }{ this.renderShareOnSocialMediaMessage() }</div>
         }
     }
     
@@ -258,11 +261,33 @@ class OfferFormPage extends Component {
         return <IonCard>
             <img alt="Muchas gracias" src="https://media.giphy.com/media/1BgsIhVlefrARI6wTE/giphy.gif" />
           	<IonCardHeader>
-        	    <IonCardTitle><h2 className="ion-text-center page-title no-vertical-padding">Muchas gracias!</h2></IonCardTitle>
+        	    <IonCardTitle><h2 className="ion-text-center page-title no-vertical-padding">¡Muchas gracias!</h2></IonCardTitle>
           	</IonCardHeader>
         	<IonCardContent>
 				<p className="ion-text-center page-subtitle">En breve te contactaremos para acordar la fecha y hora en la que pasaremos por los reciclables.</p>
         	</IonCardContent>
+        </IonCard>
+    }
+    
+    renderShareOnSocialMediaMessage() {
+        return <IonCard>
+            <img alt="Comparte en redes sociales" src={ shareSocialMedia } />
+          	<IonCardHeader>
+        	    <IonCardTitle><h2 className="ion-text-center page-title no-vertical-padding">Pasa la voz</h2></IonCardTitle>
+          	</IonCardHeader>
+        	<IonCardContent>                
+    			<p className="ion-text-center page-subtitle">No seas el único de tus amigos reciclando. <br/><b>Cuéntales de Recyclo en redes sociales.</b></p>
+                <div className="ion-text-center ion-margin">
+                    <IonChip color="primary" outline="primary" onClick={ this.shareOnTwitter }>
+                        <IonLabel>Compartir en Twitter</IonLabel>
+                        <IonIcon name="logo-twitter" />
+                    </IonChip>
+                    <IonChip color="primary" outline="primary" onClick={ this.shareOnFacebook }>
+                        <IonLabel>Compartir en Facebook</IonLabel>
+                        <IonIcon name="logo-facebook" />
+                    </IonChip>
+                </div>
+            </IonCardContent>
         </IonCard>
     }
     
@@ -327,6 +352,20 @@ class OfferFormPage extends Component {
         return <IonCardContent>
                 <h2 className="ion-text-center"><b>Paso { this.state.currentStep+1 } de 2</b></h2>
 			</IonCardContent>
+    }
+    
+    socialMediaShare() {
+        const appID = "431086961014000";
+        const text = "Acabo de publicar mis reciclables en Recyclo. Unete a Recyclo, publica los tuyos y limpiemos México juntos.";
+        return { text: encodeURIComponent(text), url: encodeURIComponent("https://recyclo.mx"), appID: appID }
+    }
+    
+    shareOnTwitter() {
+        window.open("https://twitter.com/intent/tweet/?text=".concat(this.socialMediaShare().text).concat("&amp;url=").concat(this.socialMediaShare().url), "_blank");
+    }
+    
+    shareOnFacebook() {
+        window.open("http://www.facebook.com/dialog/share?app_id=".concat(this.socialMediaShare().appID).concat("&href=").concat(this.socialMediaShare().url).concat("&quote=").concat(this.socialMediaShare().text), "_blank");
     }
     
     isMaterialPickupZoneValid() {
