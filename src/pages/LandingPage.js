@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { IonChip, IonLabel, IonIcon, IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import Backend from '../Backend';
 import Styling from '../Styling';
+import contactUs from '../contact-us.svg';
 
 import HeaderComponent from '../components/HeaderComponent'
 
@@ -18,6 +19,10 @@ class LandingPage extends Component {
 		
 		this.updateField = this.updateField.bind(this);
 		this.loginAccount = this.loginAccount.bind(this);
+        this.shareTwitter = this.shareTwitter.bind(this);
+        this.shareFacebook = this.shareFacebook.bind(this);
+        this.shareEmail = this.shareEmail.bind(this);
+        
         this.slides = React.createRef();
     }
     
@@ -49,6 +54,7 @@ class LandingPage extends Component {
         return <div>
             { this.renderLoginCard() }
             { newAccountInvitationCard }
+            { this.renderSocialMediaInfo() }
         </div>
     }
     
@@ -147,6 +153,49 @@ class LandingPage extends Component {
         return <IonCard>
           { defaultContent }
         </IonCard>
+    }
+    
+    renderSocialMediaInfo() {
+        return <IonCard>
+            <img src={ contactUs } alt="Contacto" />
+          	<IonCardHeader>
+        	    <IonCardTitle><h4 className="page-title no-vertical-padding ion-text-center">Contáctanos</h4></IonCardTitle>
+          	</IonCardHeader>
+        	<IonCardContent>                
+                <div className="ion-text-center ion-margin">
+                    <IonChip color="secondary" outline="secondary" onClick={ this.shareTwitter }>
+                        <IonLabel>@RecycloMx</IonLabel>
+                        <IonIcon name="logo-twitter" />
+                    </IonChip>
+                    <IonChip color="primary" outline="primary" onClick={ this.shareFacebook }>
+                        <IonLabel>RecycloMx</IonLabel>
+                        <IonIcon name="logo-facebook" />
+                    </IonChip>
+                    <IonChip color="success" outline="success" onClick={ this.shareEmail }>
+                        <IonLabel>contacto@recyclo.mx</IonLabel>
+                        <IonIcon name="at" />
+                    </IonChip>
+                </div>
+            </IonCardContent>
+        </IonCard>
+    }
+    
+    socialMediaShare() {
+        const facebook = "https://www.facebook.com/recyclo.mx/";
+        const twitter = "https://twitter.com/RecycloMx";
+        return { fb: facebook, tw: twitter, mail: "contacto@recyclo.mx" }
+    }
+    
+    shareTwitter() {
+        window.open(this.socialMediaShare().tw, "_blank");
+    }
+    
+    shareFacebook() {
+        window.open(this.socialMediaShare().fb, "_blank");
+    }
+    
+    shareEmail() {
+        window.open("mailto:".concat(this.socialMediaShare().mail));
     }
   	
 	loginAccount() {
