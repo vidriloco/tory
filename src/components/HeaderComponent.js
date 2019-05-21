@@ -8,7 +8,7 @@ class HeaderComponent extends Component {
         
         var slogan = null;
         if(typeof this.props.slogan !== "undefined") {
-            slogan = <p className="slogan-recyclo">Facilitamos la recolección de residuos reciclables mediante el <i>crowdsourcing</i></p>;
+            slogan = <h1 className="slogan-recyclo">{ this.props.slogan }</h1>;
         }
         
         return <IonCard>

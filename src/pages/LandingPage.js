@@ -40,7 +40,7 @@ class LandingPage extends Component {
     render() {
         return (
 		    <IonContent>
-                <HeaderComponent slogan={ "Facilitamos la recolección de residuos reciclables mediante el <i>crowdsourcing</i>" }/>
+                <HeaderComponent slogan={ "Facilitamos la recolección de residuos reciclables de manera colaborativa" }/>
                 { this.renderSlider() }
                 { this.renderActionCards() }
                 { this.renderPrivacyPolicyModal() }
