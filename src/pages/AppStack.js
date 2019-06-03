@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { IonIcon, IonLabel, IonRouterOutlet, IonPage, IonTabs, IonTabBar, IonTabButton } from '@ionic/react';
 import { Route, Redirect } from 'react-router';
 import LandingPage from './LandingPage';
+import LandingPageCampaign from './LandingPageCampaign';
 import SignUpPage from './SignUpPage';
 import DiscoverPage from './DiscoverPage';
 import OfferPage from './OfferPage';
@@ -15,6 +16,7 @@ class AppStack extends Component {
 					<Route exact path="/" render={() => <Redirect to="/offer"/>}/>
 					<Route exact path="/sign-up" render={() => <Redirect to="/feed"/>} />
 					<Route exact path="/landing" render={() => <Redirect to="/feed"/>} />
+                    <Route exact path="/campaign" render={() => <Redirect to="/feed"/>} />
 					<IonTabs>
 						<IonRouterOutlet>
 							<Route exact path="/discover" component={DiscoverPage} />
@@ -46,6 +48,7 @@ class AppStack extends Component {
 					<Route exact path="/edit-offer" render={() => <Redirect to="/landing"/>}/>
 			
 					<Route exact path="/landing" component={LandingPage} />
+                    <Route exact path="/campaign" component={LandingPageCampaign} />
 					<Route exact path="/sign-up" component={SignUpPage} />
 			  </IonPage>
 		}

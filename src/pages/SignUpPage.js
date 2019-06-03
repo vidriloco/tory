@@ -110,7 +110,10 @@ class SignUpPage extends Component {
     }
     
 	createUserAccount() {
-		var data = { user: this.state };
+		var campaignCode = localStorage.getItem('campaign-code') || '';
+		var campaign = localStorage.getItem('campaign') || false;
+        
+		var data = { user: this.state, campaign: { enabled: campaign, code: campaignCode } };
 		
         this.setState({ isSigningUp: true });
         
