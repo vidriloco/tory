@@ -106,8 +106,8 @@ class SignUpPage extends Component {
                 <IonSlide>
                     <IonCard>
                       	<IonCardHeader>
-                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Te pagamos al recogerla</h4></IonCardTitle>
-                			<p className="page-subtitle no-vertical-padding">Te pagaremos el kilo de lata al precio del mercado en ese día.</p>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Te pagamos 70% de su valor</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Según el precio del kilo de lata el día de la recolección.</p>
                       	</IonCardHeader>
                         <img alt="Tutorial" src="https://media.giphy.com/media/67ThRZlYBvibtdF9JH/giphy.gif" className="recyclo-slider-image" />
                       	<IonCardHeader>
