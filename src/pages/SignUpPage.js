@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { IonContent, IonCard, IonAlert, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { IonSlide, IonSlides, IonContent, IonCard, IonAlert, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import HeaderComponent from '../components/HeaderComponent';
 import Backend from '../Backend';
 import Styling from '../Styling';
 
 import { ClipLoader } from 'react-spinners';
+import queryString from 'query-string';
 
 class SignUpPage extends Component {
 	
@@ -23,6 +24,12 @@ class SignUpPage extends Component {
 		
 		this.updateField = this.updateField.bind(this);
 		this.createUserAccount = this.createUserAccount.bind(this);
+        this.slides = React.createRef();
+        
+        const values = queryString.parse(this.props.location.search);
+        if((typeof values.code !== "undefined")) {
+            localStorage.setItem('campaign-code', values.code);
+        }
     }
     
     render() {
@@ -35,12 +42,91 @@ class SignUpPage extends Component {
         return (
             <IonContent>
 				<HeaderComponent/>
+                { this.renderMainCardAccordingToParams() }
                 { this.renderCreateAccountCard() }
                 { this.renderSuccessfullySignedUpMessageDialog() }
 				{ loginInvitationCard }
 			</IonContent>
         );
     }
+    
+    goNext() {
+        this.slides.current.slideNext();
+    }
+    
+    goPrevious() {
+        this.slides.current.slidePrev();
+    }
+    
+    renderMainCardAccordingToParams() {
+        const promoCode = localStorage.getItem('campaign-code') || null;
+        if(promoCode === "88") {
+            return this.renderPromoSlider();
+        }
+    }
+    
+	renderPromoSlider() {
+        return <div>
+            <div className="swiper-button-next" onClick={ this.goNext.bind(this) }></div>
+            <div className="swiper-button-prev" onClick={ this.goPrevious.bind(this) }></div>
+            <IonSlides pager={true} ref={this.slides}>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">¿Cómo ganar dinero dando lata?</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Usa las flechitas o desliza a los lados para saber más</p>
+                      	</IonCardHeader>
+                        <img alt="Gana lana" src="https://media.giphy.com/media/xUOwGaM5hOLm9xYvTy/giphy.gif" className="recyclo-slider-image" />
+                    </IonCard>
+                </IonSlide>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Separa y almacena lata</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Revisa de que no tenga líquido y aplastala.</p>
+                      	</IonCardHeader>
+                        <img alt="Tutorial" src="https://media.giphy.com/media/qmcZymbr1WNeU/giphy.gif" className="recyclo-slider-image" />
+                      	<IonCardHeader>
+                			<p className="page-subtitle no-vertical-padding">Junta <b>5kg</b> o más.</p>
+                      	</IonCardHeader>
+                    </IonCard>
+                </IonSlide>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Publícala en Recyclo</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Es muy fácil, solo necesitamos saber donde recogerla.</p>
+                      	</IonCardHeader>
+                        <img alt="Tutorial" src="https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif" className="recyclo-slider-image" />
+                      	<IonCardHeader>
+                			<p className="page-subtitle no-vertical-padding">Por ahora solo estamos operando en algunas colonias de la <b>CDMX</b></p>
+                      	</IonCardHeader>
+                    </IonCard>
+                </IonSlide>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Te pagamos al recogerla</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Te pagaremos el kilo de lata al precio del mercado en ese día.</p>
+                      	</IonCardHeader>
+                        <img alt="Tutorial" src="https://media.giphy.com/media/67ThRZlYBvibtdF9JH/giphy.gif" className="recyclo-slider-image" />
+                      	<IonCardHeader>
+                			<p className="page-subtitle no-vertical-padding">El precio de la lata ronda por lo regular los <b>$20 MXN por Kilo</b></p>
+                      	</IonCardHeader>
+                    </IonCard>
+                </IonSlide>
+                <IonSlide>
+                    <IonCard>
+                      	<IonCardHeader>
+                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Empieza hoy</h4></IonCardTitle>
+                			<p className="page-subtitle no-vertical-padding">Crea tu cuenta o inicia sesión</p>
+                      	</IonCardHeader>
+                        <img alt="Tutorial" src="https://media.giphy.com/media/fsc7c7TYKulQ4lmmAo/giphy.gif" className="recyclo-slider-image" />
+                    </IonCard>
+                </IonSlide>
+    	  </IonSlides>
+        </div>
+	}
     
     renderLoginInvitationCard() {
         return <IonCard>					
@@ -111,7 +197,7 @@ class SignUpPage extends Component {
     
 	createUserAccount() {
 		var campaignCode = localStorage.getItem('campaign-code') || '';
-		var campaign = localStorage.getItem('campaign') || false;
+		var campaign = campaignCode !== '';
         
 		var data = { user: this.state, campaign: { enabled: campaign, code: campaignCode } };
 		
