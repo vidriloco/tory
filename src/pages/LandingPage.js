@@ -4,6 +4,8 @@ import Backend from '../Backend';
 import Styling from '../Styling';
 import contactUs from '../contact-us.svg';
 import PrivacyPolicyPage from './PrivacyPolicyPage';
+import lataPromo from '../banner-lata-promo.jpg';
+import queryString from 'query-string';
 
 import HeaderComponent from '../components/HeaderComponent'
 
@@ -27,6 +29,11 @@ class LandingPage extends Component {
         this.openPrivacyNotice = this.openPrivacyNotice.bind(this);
         
         this.slides = React.createRef();
+        
+        const values = queryString.parse(this.props.location.search);
+        if((typeof values.code !== "undefined")) {
+            localStorage.setItem('campaign-code', values.code);
+        }
     }
     
     goNext() {
@@ -41,11 +48,32 @@ class LandingPage extends Component {
         return (
 		    <IonContent>
                 <HeaderComponent slogan={ "Facilitamos la recolección de residuos reciclables de manera colaborativa" }/>
-                { this.renderSlider() }
+                { this.renderMainCardAccordingToParams() }
                 { this.renderActionCards() }
                 { this.renderPrivacyPolicyModal() }
             </IonContent>
         );
+    }
+    
+    renderMainCardAccordingToParams() {
+        const promoCode = localStorage.getItem('campaign-code') || null;
+        if(promoCode === "88") {
+            return this.renderCatchyMessage();
+        } else {
+            return this.renderSlider();
+        }
+    }
+    
+    renderCatchyMessage() {
+        return <IonCard>
+            <img alt="Gana lana" src={ lataPromo } />
+          	<IonCardHeader>
+            	<IonCardTitle><h4 className="page-title no-vertical-padding">Empieza a ganar dinero hoy</h4></IonCardTitle>
+    			<p className="page-subtitle no-vertical-padding">Publica tus latas y te damos el 70% de su valor en el mercado del reciclaje.</p>
+          	    <br/>
+                <IonButton href="/sign-up">Conoce como funciona</IonButton>
+            </IonCardHeader>
+        </IonCard>
     }
     
     renderPrivacyPolicyModal() {
@@ -82,7 +110,7 @@ class LandingPage extends Component {
                     <IonCard>
                       	<IonCardHeader>
                         	<IonCardTitle><h4 className="page-title no-vertical-padding">¿Cómo funciona Recyclo?</h4></IonCardTitle>
-                			<p className="page-subtitle no-vertical-padding">Desliza para conocer más</p>
+                			<p className="page-subtitle no-vertical-padding">Usa las flechitas o desliza a los lados para saber más</p>
                       	</IonCardHeader>
                         <img alt="Tutorial" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" className="recyclo-slider-image" />
                     </IonCard>
