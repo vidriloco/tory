@@ -7,6 +7,7 @@ import DiscoverPage from './DiscoverPage';
 import OfferPage from './OfferPage';
 import ProfilePage from './ProfilePage';
 import OfferFormPage from './OfferFormPage';
+import CampaignHelpPage from './CampaignHelpPage';
 
 class AppStack extends Component {
 	render() {
@@ -16,6 +17,7 @@ class AppStack extends Component {
 					<Route exact path="/sign-up" render={() => <Redirect to="/feed"/>} />
 					<Route exact path="/landing" render={() => <Redirect to="/feed"/>} />
                     <Route exact path="/campaign" render={() => <Redirect to="/feed"/>} />
+                    <Route exact path="/campaign-help" render={() => <Redirect to="/feed"/>} />
 					<IonTabs>
 						<IonRouterOutlet>
 							<Route exact path="/discover" component={DiscoverPage} />
@@ -48,6 +50,7 @@ class AppStack extends Component {
 			
 					<Route exact path="/landing" component={LandingPage} />
                     <Route exact path="/campaign" component={LandingPage} />
+                    <Route exact path="/campaign-help" component={CampaignHelpPage} />
 					<Route exact path="/sign-up" component={SignUpPage} />
 			  </IonPage>
 		}
