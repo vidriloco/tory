@@ -71,7 +71,7 @@ class LandingPage extends Component {
             	<IonCardTitle><h4 className="page-title no-vertical-padding">Empieza a ganar dinero hoy</h4></IonCardTitle>
     			<p className="page-subtitle no-vertical-padding">Publica tus latas y te damos el 70% de su valor en el mercado del reciclaje.</p>
           	    <br/>
-                <IonButton size="small" href="/sign-up">Crear cuenta</IonButton>
+                <IonButton size="small" href="/register">Crear cuenta</IonButton>
                 <IonButton size="small" fill="outline" href="/campaign-help">Más Info</IonButton>
             </IonCardHeader>
         </IonCard>

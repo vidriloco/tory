@@ -14,7 +14,7 @@ class AppStack extends Component {
 		if(this.loggedIn()) {
 			return <IonPage>
 					<Route exact path="/" render={() => <Redirect to="/offer"/>}/>
-					<Route exact path="/sign-up" render={() => <Redirect to="/feed"/>} />
+					<Route exact path="/register" render={() => <Redirect to="/feed"/>} />
 					<Route exact path="/landing" render={() => <Redirect to="/feed"/>} />
                     <Route exact path="/campaign" render={() => <Redirect to="/feed"/>} />
                     <Route exact path="/campaign-help" render={() => <Redirect to="/feed"/>} />
@@ -47,11 +47,11 @@ class AppStack extends Component {
 					<Route exact path="/feed" render={() => <Redirect to="/landing"/>}/>
 					<Route exact path="/new-offer" render={() => <Redirect to="/landing"/>}/>
 					<Route exact path="/edit-offer" render={() => <Redirect to="/landing"/>}/>
-			
+					<Route exact path="/sign-up" render={() => <Redirect to="/landing?code=88"/>}/>
 					<Route exact path="/landing" component={LandingPage} />
                     <Route exact path="/campaign" component={LandingPage} />
                     <Route exact path="/campaign-help" component={CampaignHelpPage} />
-					<Route exact path="/sign-up" component={SignUpPage} />
+					<Route exact path="/register" component={SignUpPage} />
 			  </IonPage>
 		}
 	}
