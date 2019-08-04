@@ -8,6 +8,7 @@ import lataPromo from '../banner-lata-promo.jpg';
 import queryString from 'query-string';
 
 import HeaderComponent from '../components/HeaderComponent'
+import SliderComponent from '../components/SliderComponent'
 
 import { ClipLoader } from 'react-spinners';
 
@@ -102,58 +103,13 @@ class LandingPage extends Component {
     }
     
 	renderSlider() {
-
-		return <div>
-            <div className="swiper-button-next" onClick={ this.goNext.bind(this) }></div>
-            <div className="swiper-button-prev" onClick={ this.goPrevious.bind(this) }></div>
-            <IonSlides pager={true} ref={this.slides}>
-                <IonSlide>
-                    <IonCard>
-                      	<IonCardHeader>
-                        	<IonCardTitle><h4 className="page-title no-vertical-padding">¿Cómo funciona Recyclo?</h4></IonCardTitle>
-                			<p className="page-subtitle no-vertical-padding">Usa las flechitas o desliza a los lados para saber más</p>
-                      	</IonCardHeader>
-                        <img alt="Tutorial" src="https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif" className="recyclo-slider-image" />
-                    </IonCard>
-                </IonSlide>
-                <IonSlide>
-                    <IonCard>
-                      	<IonCardHeader>
-                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Separa y limpia</h4></IonCardTitle>
-                			<p className="page-subtitle no-vertical-padding">Guarda tus reciclables y tenlos listos</p>
-                      	</IonCardHeader>
-                        <img alt="Tutorial" src="https://media.giphy.com/media/10r895QS3fkzNC/giphy.gif" className="recyclo-slider-image" />
-                    </IonCard>
-                </IonSlide>
-                <IonSlide>
-                    <IonCard>
-                      	<IonCardHeader>
-                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Publícalos en Recyclo</h4></IonCardTitle>
-                			<p className="page-subtitle no-vertical-padding">Especifica tipo, número y presentación</p>
-                      	</IonCardHeader>
-                        <img alt="Tutorial" src="https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif" className="recyclo-slider-image" />
-                    </IonCard>
-                </IonSlide>
-                <IonSlide>
-                    <IonCard>
-                      	<IonCardHeader>
-                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Los pasamos a recoger</h4></IonCardTitle>
-                			<p className="page-subtitle no-vertical-padding">Coordinaremos contigo el lugar y hora</p>
-                      	</IonCardHeader>
-                        <img alt="Tutorial" src="https://media.giphy.com/media/xTiTnhCc4SeRW74zBK/giphy.gif" className="recyclo-slider-image" />
-                    </IonCard>
-                </IonSlide>
-                <IonSlide>
-                    <IonCard>
-                      	<IonCardHeader>
-                        	<IonCardTitle><h4 className="page-title no-vertical-padding">Empieza hoy</h4></IonCardTitle>
-                			<p className="page-subtitle no-vertical-padding">Crea una cuenta o inicia sesión</p>
-                      	</IonCardHeader>
-                        <img alt="Tutorial" src="https://media.giphy.com/media/fsc7c7TYKulQ4lmmAo/giphy.gif" className="recyclo-slider-image" />
-                    </IonCard>
-                </IonSlide>
-    	  </IonSlides>
-        </div>
+        
+        let sliderData = [
+          { title: "¿Cómo funciona Recyclo?", description: "Usa las flechitas o desliza a los lados para saber más", imageSrc: "https://media.giphy.com/media/l1KVcrdl7rJpFnY2s/giphy.gif", imageAlt: "Tutorial", imageClassName: "slider-image" },
+          { title: "Publícalos en Recyclo", description: "Especifica tipo, número y presentación", imageSrc: "https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif", imageAlt: "Tutorial", imageClassName: "slider-image" }
+        ];
+        
+        return <SliderComponent dataSource={ sliderData } />;
 	}
     
     renderNewAccountInvitationCard() {
