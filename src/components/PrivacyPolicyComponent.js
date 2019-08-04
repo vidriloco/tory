@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { IonChip, IonLabel, IonCardContent, IonCard, IonCardHeader, IonCardTitle, IonButton } from '@ionic/react';
 
-import HeaderComponent from '../components/HeaderComponent'
+import HeaderComponent from './HeaderComponent'
 
-class PrivacyPolicyPage extends Component {
+class PrivacyPolicyComponent extends Component {
     
     render() {
         return <div>
@@ -85,4 +85,4 @@ class PrivacyPolicyPage extends Component {
     }
 }
 
-export default PrivacyPolicyPage;
+export default PrivacyPolicyComponent;

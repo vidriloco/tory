@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { IonModal, IonChip, IonLabel, IonIcon, IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import Backend from '../Backend';
 import Styling from '../Styling';
-import contactUs from '../contact-us.svg';
-import PrivacyPolicyPage from './PrivacyPolicyPage';
 import lataPromo from '../banner-lata-promo.jpg';
 import queryString from 'query-string';
 
 import HeaderComponent from '../components/HeaderComponent'
 import SliderComponent from '../components/SliderComponent'
+import AboutComponent from '../components/AboutComponent'
 
 import { ClipLoader } from 'react-spinners';
 
@@ -18,16 +17,11 @@ class LandingPage extends Component {
         
         this.state = {
 			login: null,
-			password: null,
-            isShowingPrivacyPolicy: false
+			password: null
 		}
 		
 		this.updateField = this.updateField.bind(this);
 		this.loginAccount = this.loginAccount.bind(this);
-        this.shareTwitter = this.shareTwitter.bind(this);
-        this.shareFacebook = this.shareFacebook.bind(this);
-        this.shareEmail = this.shareEmail.bind(this);
-        this.openPrivacyNotice = this.openPrivacyNotice.bind(this);
         
         this.slides = React.createRef();
         
@@ -51,7 +45,6 @@ class LandingPage extends Component {
                 <HeaderComponent slogan={ "Facilitamos la recolección de residuos reciclables de manera colaborativa" }/>
                 { this.renderMainCardAccordingToParams() }
                 { this.renderActionCards() }
-                { this.renderPrivacyPolicyModal() }
             </IonContent>
         );
     }
@@ -77,15 +70,6 @@ class LandingPage extends Component {
             </IonCardHeader>
         </IonCard>
     }
-    
-    renderPrivacyPolicyModal() {
-        return <IonModal isOpen={this.state.isShowingPrivacyPolicy} 
-                onDidDismiss={() => this.setState(() => ({ isShowingPrivacyPolicy: false }))}>
-                <IonContent>
-                    <PrivacyPolicyPage dismiss={ this.dismissPrivacyPolicyModal.bind(this) }/>
-                </IonContent>
-            </IonModal>
-    }
   
     renderActionCards() {
         var newAccountInvitationCard = null;
@@ -98,7 +82,6 @@ class LandingPage extends Component {
             { this.renderLoginCard() }
             { newAccountInvitationCard }
             { this.renderSocialMediaInfo() }
-            { this.renderPrivacyPolicy() }
         </div>
     }
     
@@ -155,69 +138,11 @@ class LandingPage extends Component {
     }
     
     renderSocialMediaInfo() {
-        return <IonCard>
-            <img src={ contactUs } alt="Contacto" />
-          	<IonCardHeader>
-        	    <IonCardTitle><h4 className="page-title no-vertical-padding ion-text-center">Contáctanos</h4></IonCardTitle>
-          	</IonCardHeader>
-        	<IonCardContent>                
-                <div className="ion-text-center ion-margin">
-                    <IonChip color="secondary" outline="secondary" onClick={ this.shareTwitter }>
-                        <IonLabel>@RecycloMx</IonLabel>
-                        <IonIcon name="logo-twitter" />
-                    </IonChip>
-                    <IonChip color="primary" outline="primary" onClick={ this.shareFacebook }>
-                        <IonLabel>RecycloMx</IonLabel>
-                        <IonIcon name="logo-facebook" />
-                    </IonChip>
-                    <IonChip color="success" outline="success" onClick={ this.shareEmail }>
-                        <IonLabel>contacto@recyclo.mx</IonLabel>
-                        <IonIcon name="at" />
-                    </IonChip>
-                </div>
-            </IonCardContent>
-        </IonCard>
-    }
-    
-    renderPrivacyPolicy() {
-        return <IonCard>
-          	<IonCardHeader>
-        	    <IonCardTitle><h4 className="page-title no-vertical-padding ion-text-center">Aviso de Privacidad</h4></IonCardTitle>
-          	</IonCardHeader>
-        	<IonCardContent>                
-                <div className="ion-text-center ion-margin">
-                    <IonChip color="sucess" outline="sucess" onClick={ this.openPrivacyNotice }>
-                        <IonLabel>Consultar</IonLabel>
-                    </IonChip>
-                </div>
-            </IonCardContent>
-        </IonCard>
-    }
-    
-    openPrivacyNotice() {
-        this.setState({ isShowingPrivacyPolicy: true });
-    }
-    
-    dismissPrivacyPolicyModal() {
-        this.setState({ isShowingPrivacyPolicy: false });
-    }
-    
-    socialMediaShare() {
         const facebook = "https://www.facebook.com/recyclo.mx/";
         const twitter = "https://twitter.com/RecycloMx";
-        return { fb: facebook, tw: twitter, mail: "contacto@recyclo.mx" }
-    }
-    
-    shareTwitter() {
-        window.open(this.socialMediaShare().tw, "_blank");
-    }
-    
-    shareFacebook() {
-        window.open(this.socialMediaShare().fb, "_blank");
-    }
-    
-    shareEmail() {
-        window.open("mailto:".concat(this.socialMediaShare().mail));
+        let socialMedia = { fb: { url: facebook, title: "Recyclo en Facebook" }, tw: {url: twitter, title: 'Recyclo en Twitter' }, email: { url: "contacto@recyclo.mx", title: 'E-mail'} }
+        
+        return <AboutComponent socialMedia={ socialMedia } headerSeoTitle="Nuestros datos de contacto" title="Acerca de Recyclo" />
     }
   	
 	loginAccount() {
