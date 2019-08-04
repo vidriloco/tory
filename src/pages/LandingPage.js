@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IonSlides, IonSlide, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
+import { IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton, IonInput } from '@ionic/react';
 import Backend from '../Backend';
 import Styling from '../Styling';
 import lataPromo from '../banner-lata-promo.jpg';
@@ -29,14 +29,6 @@ class LandingPage extends Component {
         if((typeof values.code !== "undefined")) {
             localStorage.setItem('campaign-code', values.code);
         }
-    }
-    
-    goNext() {
-        this.slides.current.slideNext();
-    }
-    
-    goPrevious() {
-        this.slides.current.slidePrev();
     }
     
     render() {

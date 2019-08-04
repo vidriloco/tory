@@ -23,11 +23,6 @@ class SliderComponent extends Component {
     
     renderSlidesCollection() {
 		return this.props.dataSource.map((slide, index) => {
-			var classNameForMaterial = this.state.slideDefaultClassName;
-			
-            if(!slide.enabled) {
-				classNameForMaterial += " " + this.state.slideDisabledClassName;
-			}
             
             if(typeof slide.description !== null) {
                 return <IonSlide key={index}>
